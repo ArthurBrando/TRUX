@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>TRUX AI</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#000000;
+    --surface:#0b0b0b;
+    --surface2:#131313;
+    --surface3:#1b1b1b;
+    --border:#262626;
+    --border2:#333333;
+    --text:#f5f5f5;
+    --muted:#8c8c8c;
+    --orange:#ff6b00;
+    --orange-hi:#ff8226;
+    --orange-soft:rgba(255,107,0,.12);
+    --radius:14px;
+  }
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--text);overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  textarea,input{font-family:inherit}
+  svg{display:block;flex-shrink:0}
+  ::selection{background:rgba(255,107,0,.35);color:#fff}
+
+  /* scrollbars */
+  *::-webkit-scrollbar{width:9px;height:9px}
+  *::-webkit-scrollbar-track{background:transparent}
+  *::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+  *::-webkit-scrollbar-thumb:hover{background:#3d3d3d;background-clip:padding-box}
+
+  .app{display:flex;height:100dvh;width:100%}
+
+  /* ============ SIDEBAR ============ */
+  .sidebar{
+    width:292px;flex:0 0 292px;background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex;flex-direction:column;height:100%;z-index:60;
+  }
+  .sidebar-head{padding:18px 16px 14px;display:flex;align-items:center;gap:11px}
+  .logo-mark{
+    width:34px;height:34px;border-radius:10px;background:#000;
+    border:1.5px solid var(--orange);display:grid;place-items:center;
+    box-shadow:0 0 18px rgba(255,107,0,.22);
+  }
+  .logo-mark svg{width:18px;height:18px;color:var(--orange)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-name{font-size:14.5px;font-weight:800;letter-spacing:.18em}
+  .brand-sub{font-size:9.5px;letter-spacing:.16em;color:#6e6e6e;font-weight:600;text-transform:uppercase}
+
+  .btn-new{
+    margin:0 12px 14px;display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:11px;border-radius:12px;background:var(--orange);color:#000;
+    font-weight:800;font-size:13px;letter-spacing:.02em;transition:background .15s,transform .08s;
+  }
+  .btn-new:hover{background:var(--orange-hi)}
+  .btn-new:active{transform:scale(.985)}
+  .btn-new svg{width:16px;height:16px}
+
+  .section-label{
+    padding:0 18px 8px;font-size:9.5px;letter-spacing:.18em;color:#5e5e5e;
+    font-weight:700;text-transform:uppercase;
+  }
+
+  .modes{display:flex;gap:6px;padding:0 12px 14px}
+  .mode{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+    padding:9px 3px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface2);color:#8a8a8a;font-size:10px;font-weight:700;
+    letter-spacing:.03em;transition:.15s;
+  }
+  .mode svg{width:16px;height:16px;color:#ffffff;opacity:.55;transition:.15s}
+  .mode:hover{border-color:#3a3a3a;color:#c9c9c9}
+  .mode:hover svg{opacity:.85}
+  .mode.active{border-color:var(--orange);background:var(--orange-soft);color:var(--orange)}
+  .mode.active svg{color:var(--orange);opacity:1}
+
+  .chat-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
+  .empty-list{font-size:12px;color:#5c5c5c;text-align:center;padding:22px 0}
+  .chat-item{
+    display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;
+    font-size:13px;color:#c9c9c9;cursor:pointer;position:relative;
+    border:1px solid transparent;transition:background .12s;
+  }
+  .chat-item:hover{background:var(--surface2)}
+  .chat-item.active{background:var(--surface3);color:#fff;border-color:#2c2c2c}
+  .ci-icon{width:15px;height:15px;color:#fff;opacity:.45}
+  .chat-item.active .ci-icon{color:var(--orange);opacity:1}
+  .ci-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ci-actions{display:none;gap:1px;flex-shrink:0}
+  .chat-item:hover .ci-actions,.chat-item.active .ci-actions{display:flex}
+
+  .icon-btn{
+    width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+    color:#fff;transition:background .12s;
+  }
+  .icon-btn svg{width:14px;height:14px;opacity:.65}
+  .icon-btn:hover{background:#262626}
+  .icon-btn:hover svg{opacity:1}
+  .icon-btn.danger:hover{background:rgba(255,60,60,.16)}
+  .icon-btn.danger:hover svg{color:#ff5a5a;opacity:1}
+
+  .sidebar-foot{border-top:1px solid var(--border);padding:9px;display:flex;flex-direction:column;gap:2px}
+  .foot-btn{
+    display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;
+    font-size:12.5px;color:#b3b3b3;text-decoration:none;transition:background .12s,color .12s;
+    font-weight:500;width:100%;text-align:left;
+  }
+  .foot-btn svg{width:16px;height:16px;color:#fff;opacity:.7}
+  .foot-btn:hover{background:var(--surface2);color:#fff}
+  .foot-btn:hover svg{opacity:1}
+  .foot-btn.danger:hover{background:rgba(255,60,60,.1);color:#ff6b6b}
+  .foot-btn.danger:hover svg{color:#ff6b6b;opacity:1}
+  .foot-btn.discord svg{color:#fff}
+  .foot-btn.discord:hover{background:rgba(88,101,242,.14);color:#fff}
+
+  /* ============ MAIN ============ */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:#000}
+
+  .topbar{
+    height:58px;flex:0 0 58px;display:flex;align-items:center;gap:10px;
+    padding:0 16px;border-bottom:1px solid var(--border);
+    background:rgba(0,0,0,.72);backdrop-filter:blur(10px);z-index:20;
+  }
+  .btn-menu{display:none;width:34px;height:34px;border-radius:9px;place-items:center;color:#fff}
+  .btn-menu svg{width:19px;height:19px}
+  .btn-menu:hover{background:var(--surface2)}
+  .topbar-title{
+    flex:1;font-size:13.5px;font-weight:600;color:#e6e6e6;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .topbar-title .mode-tag{
+    display:inline-block;margin-left:9px;padding:2.5px 8px;border-radius:6px;
+    font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--orange-soft);color:var(--orange);vertical-align:middle;
+  }
+  .topbar-actions{display:flex;gap:2px}
+
+  .messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:26px 0 6px;min-height:0}
+  .msg-wrap{max-width:840px;margin:0 auto;padding:0 20px}
+
+  .msg{display:flex;gap:12px;margin-bottom:24px;animation:fadeUp .22s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .msg.user{flex-direction:row-reverse}
+  .avatar{
+    width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;
+    font-size:10px;font-weight:800;letter-spacing:.04em;user-select:none;
+  }
+  .msg.user .avatar{background:#1a1a1a;color:#fff;border:1px solid #2e2e2e}
+  .msg.ai .avatar{background:var(--orange);color:#000}
+
+  .bubble{
+    max-width:calc(100% - 56px);font-size:14.5px;line-height:1.68;
+    overflow-wrap:anywhere;word-break:break-word;min-width:0;
+  }
+  .msg.user .bubble{
+    background:var(--surface3);border:1px solid var(--border);
+    padding:11px 15px;border-radius:15px;border-top-right-radius:5px;
+  }
+  .msg.ai .bubble{padding:1px 0;border-radius:15px;border-top-left-radius:5px}
+
+  .bubble p{margin:0 0 11px}
+  .bubble p:last-child{margin-bottom:0}
+  .bubble h3,.bubble h4{margin:16px 0 8px;font-size:15px;font-weight:700;color:#fff}
+  .bubble h3:first-child,.bubble h4:first-child{margin-top:0}
+  .bubble ul{margin:0 0 11px;padding-left:20px}
+  .bubble li{margin-bottom:5px}
+  .bubble strong{color:#fff;font-weight:700}
+  .bubble em{color:#d8d8d8}
+  .bubble a{color:var(--orange);text-decoration:underline;text-underline-offset:2px}
+  .bubble code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    background:#161616;border:1px solid #232323;padding:1.5px 5px;border-radius:5px;
+    font-size:12.5px;color:#ffb27a;
+  }
+  .bubble pre{
+    position:relative;background:#0a0a0a;border:1px solid var(--border);border-radius:11px;
+    padding:13px 14px;overflow-x:auto;margin:11px 0;
+  }
+  .bubble pre code{
+    background:none;border:none;padding:0;font-size:12.5px;line-height:1.65;
+    color:#e4e4e4;display:block;white-space:pre;
+  }
+  .pre-copy{
+    position:absolute;top:7px;right:7px;width:26px;height:26px;border-radius:7px;
+    display:grid;place-items:center;background:#1c1c1c;border:1px solid #2e2e2e;
+    opacity:0;transition:opacity .15s,background .15s;color:#fff;
+  }
+  pre:hover .pre-copy{opacity:1}
+  .pre-copy:hover{background:#2a2a2a}
+  .pre-copy svg{width:13px;height:13px;opacity:.85}
+
+  .caret{
+    display:inline-block;width:7px;height:15px;background:var(--orange);
+    vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite;border-radius:1px;
+  }
+  @keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+
+  .err{color:#ff6b6b;font-size:13px}
+
+  /* images */
+  .img-card{margin:4px 0}
+  .img-prompt{
+    font-size:11.5px;color:#8a8a8a;margin-bottom:9px;letter-spacing:.02em;
+    padding-left:9px;border-left:2px solid var(--orange);
+  }
+  .img-shell{
+    position:relative;border-radius:13px;overflow:hidden;border:1px solid var(--border);
+    background:var(--surface2);max-width:440px;min-height:120px;
+  }
+  .img-shell img{width:100%;display:block;opacity:0;transition:opacity .4s}
+  .img-shell img.loaded{opacity:1}
+  .img-loading{
+    position:absolute;inset:0;display:grid;place-items:center;
+    font-size:11.5px;letter-spacing:.14em;color:var(--orange);font-weight:700;
+    text-transform:uppercase;
+  }
+  .img-loading::after{content:"";position:absolute;inset:0;background:
+    linear-gradient(100deg,transparent 20%,rgba(255,107,0,.07) 50%,transparent 80%);
+    animation:shimmer 1.6s infinite}
+  @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .img-actions{display:flex;gap:8px;margin-top:10px}
+  .chip-btn{
+    display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;
+    background:var(--surface2);border:1px solid var(--border);color:#d0d0d0;
+    font-size:11.5px;font-weight:600;transition:.15s;
+  }
+  .chip-btn svg{width:13px;height:13px;color:#fff;opacity:.8}
+  .chip-btn:hover{background:var(--surface3);border-color:#3a3a3a;color:#fff}
+
+  /* empty state */
+  .empty{
+    height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;
+  }
+  .empty-mark{
+    width:66px;height:66px;border-radius:19px;background:#000;border:2px solid var(--orange);
+    display:grid;place-items:center;margin-bottom:22px;
+    box-shadow:0 0 44px rgba(255,107,0,.24);
+  }
+  .empty-mark svg{width:32px;height:32px;color:var(--orange)}
+  .empty h1{font-size:25px;font-weight:800;letter-spacing:.2em;margin-bottom:11px}
+  .empty p{font-size:13.5px;color:#7a7a7a;max-width:400px;line-height:1.65;margin-bottom:26px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
+  .chip{
+    padding:9px 15px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);
+    font-size:12.5px;color:#bfbfbf;transition:.15s;
+  }
+  .chip:hover{background:var(--surface3);border-color:var(--orange);color:#fff}
+
+  /* composer */
+  .composer-wrap{
+    padding:10px 20px 16px;background:linear-gradient(to top,#000 65%,transparent);
+    flex-shrink:0;
+  }
+  .composer{
+    max-width:840px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);
+    border-radius:16px;padding:8px 9px 8px 9px;display:flex;align-items:flex-end;gap:6px;
+    transition:border-color .18s,box-shadow .18s;
+  }
+  .composer:focus-within{border-color:#3e3e3e;box-shadow:0 0 0 3px rgba(255,107,0,.07)}
+  .composer.img-mode{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+  .comp-btn{
+    width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:0 0 34px;
+    color:#fff;transition:background .14s,color .14s;
+  }
+  .comp-btn svg{width:17px;height:17px;opacity:.65}
+  .comp-btn:hover{background:#1f1f1f}
+  .comp-btn:hover svg{opacity:1}
+  .comp-btn.on{background:var(--orange-soft);color:var(--orange)}
+  .comp-btn.on svg{color:var(--orange);opacity:1}
+
+  #input{
+    flex:1;background:none;border:none;outline:none;color:var(--text);
+    resize:none;font-size:14.5px;line-height:1.5;max-height:180px;min-height:24px;
+    padding:6px 4px;overflow-y:auto;
+  }
+  #input::placeholder{color:#6a6a6a}
+  .btn-send{
+    width:36px;height:36px;border-radius:10px;background:var(--orange);color:#000;
+    display:grid;place-items:center;flex:0 0 36px;transition:.15s;
+  }
+  .btn-send svg{width:17px;height:17px}
+  .btn-send:hover{background:var(--orange-hi)}
+  .btn-send:disabled{opacity:.3;cursor:not-allowed}
+  .btn-send:disabled:hover{background:var(--orange)}
+  .composer-hint{
+    max-width:840px;margin:8px auto 0;text-align:center;font-size:10.5px;
+    color:#4f4f4f;letter-spacing:.03em;
+  }
+
+  /* ============ MODAL CODE ============ */
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(7px);
+    display:none;align-items:center;justify-content:center;z-index:200;padding:18px;
+  }
+  .overlay.open{display:flex;animation:fadeIn .16s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal{
+    width:min(980px,100%);height:min(760px,92vh);background:var(--surface);
+    border:1px solid #2b2b2b;border-radius:18px;display:flex;flex-direction:column;
+    overflow:hidden;box-shadow:0 26px 90px rgba(0,0,0,.9);animation:pop .18s ease;
+  }
+  @keyframes pop{from{transform:scale(.975);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-head{
+    display:flex;align-items:center;gap:11px;padding:13px 15px;
+    border-bottom:1px solid var(--border);flex-shrink:0;
+  }
+  .modal-head .m-icon{
+    width:30px;height:30px;border-radius:9px;background:var(--orange-soft);
+    display:grid;place-items:center;color:var(--orange);
+  }
+  .modal-head .m-icon svg{width:16px;height:16px}
+  .modal-head h2{font-size:13.5px;font-weight:700;letter-spacing:.06em}
+  .modal-head .m-sub{font-size:10.5px;color:#6e6e6e;letter-spacing:.06em;margin-top:1px}
+  .modal-head .spacer{flex:1}
+  .code-input-area{
+    padding:13px 15px;border-bottom:1px solid var(--border);display:flex;gap:9px;
+    align-items:flex-end;flex-shrink:0;background:var(--surface2);
+  }
+  #codeInput{
+    flex:1;background:#0a0a0a;border:1px solid var(--border);border-radius:11px;
+    padding:11px 13px;color:var(--text);font-size:13.5px;line-height:1.5;resize:none;
+    outline:none;max-height:130px;min-height:44px;transition:border-color .15s;
+  }
+  #codeInput:focus{border-color:var(--orange)}
+  #codeInput::placeholder{color:#5e5e5e}
+  .code-out{
+    flex:1;margin:0;padding:18px;overflow:auto;background:#070707;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.8px;line-height:1.68;color:#e2e2e2;white-space:pre-wrap;
+    word-break:break-word;min-height:0;
+  }
+  .code-out:empty::before{
+    content:"O código gerado aparece aqui.";color:#454545;font-size:12.5px;
+  }
+  .code-out.streaming::after{
+    content:"";display:inline-block;width:8px;height:14px;background:var(--orange);
+    vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite;
+  }
+
+  /* toast */
+  #toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,18px);
+    background:#161616;border:1px solid #333;color:#f0f0f0;padding:11px 20px;
+    border-radius:11px;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+    opacity:0;pointer-events:none;transition:.24s;z-index:400;
+    box-shadow:0 14px 40px rgba(0,0,0,.75);max-width:calc(100vw - 40px);text-align:center;
+  }
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  #toast .dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--orange);margin-right:8px;vertical-align:1px;
+  }
+
+  /* scrim mobile */
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:55;display:none}
+  .scrim.open{display:block}
+
+  @media (max-width:880px){
+    .sidebar{
+      position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);
+      transition:transform .26s cubic-bezier(.4,0,.2,1);width:284px;flex-basis:284px;
+    }
+    .sidebar.open{transform:translateX(0)}
+    .btn-menu{display:grid}
+    .msg-wrap{padding:0 14px}
+    .composer-wrap{padding:8px 12px 12px}
+    .bubble{max-width:calc(100% - 48px);font-size:14px}
+    .overlay{padding:0}
+    .modal{height:100dvh;border-radius:0;border:none;width:100%}
+  }
+  @media (max-width:520px){
+    .empty h1{font-size:21px}
+    .topbar-actions .icon-btn{width:30px;height:30px}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+          <path d="M4 6h16M12 6v13"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">TRUX AI</span>
+        <span class="brand-sub">Anônimo · Local</span>
+      </div>
+    </div>
+
+    <button class="btn-new" id="btnNew">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Novo chat
+    </button>
+
+    <div class="section-label">Modo da IA</div>
+    <div class="modes">
+      <button class="mode" data-mode="fast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+        Rápida
+      </button>
+      <button class="mode" data-mode="think">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5.8A3 3 0 0 0 7 18a3 3 0 0 0 5 1.5V4.5A2.5 2.5 0 0 0 9 4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5.8A3 3 0 0 1 17 18a3 3 0 0 1-5 1.5"/></svg>
+        Pensativa
+      </button>
+      <button class="mode" data-mode="code">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+        Code
+      </button>
+    </div>
+
+    <div class="section-label">Conversas</div>
+    <div class="chat-list" id="chatList"></div>
+
+    <div class="sidebar-foot">
+      <button class="foot-btn" id="btnExportAll">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
+        Baixar todas as conversas
+      </button>
+      <button class="foot-btn danger" id="btnWipe">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 17l-3-3 9-9 5 5-9 9H6z"/></svg>
+        Apagar todos os dados
+      </button>
+      <a class="foot-btn discord" href="https://discord.gg/ZTaKs2KH4q" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        Entrar no Discord
+      </a>
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+    <header class="topbar">
+      <button class="btn-menu" id="btnMenu" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="topbar-title" id="topTitle">TRUX AI</div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="btnBranch" title="Criar branch a partir de um resumo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg>
+        </button>
+        <button class="icon-btn" id="btnDownloadChat" title="Baixar este chat em .TXT">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
+        </button>
+        <button class="icon-btn danger" id="btnDeleteChat" title="Apagar este chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="composer-wrap">
+      <div class="composer" id="composer">
+        <button class="comp-btn" id="btnImg" title="Gerar imagem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </button>
+        <textarea id="input" rows="1" placeholder="Pergunte alguma coisa para a TRUX AI..."></textarea>
+        <button class="btn-send" id="btnSend" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </div>
+      <div class="composer-hint">Enter envia · Shift+Enter nova linha · Nada é salvo após sair</div>
+    </div>
+  </main>
+</div>
+
+<!-- ================= CODE MODAL ================= -->
+<div class="overlay" id="codeOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="m-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+      </div>
+      <div>
+        <h2>TRUX CODE</h2>
+        <div class="m-sub">Descreva o que precisa · o código é escrito ao vivo</div>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="codeCopy" title="Copiar código">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      </button>
+      <button class="icon-btn" id="codeDownload" title="Baixar como .TXT">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
+      </button>
+      <button class="icon-btn" id="codeClose" title="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="code-input-area">
+      <textarea id="codeInput" rows="1" placeholder="Ex.: crie uma função em JavaScript que valide CPF..."></textarea>
+      <button class="btn-send" id="codeSend" style="flex:0 0 40px;width:40px;height:40px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
+
+    <pre class="code-out" id="codeOut"></pre>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   TRUX AI — app 100% local, sem login, sem servidor próprio.
+   Os dados vivem apenas na sessão do navegador e são
+   apagados quando você fecha/abre o site novamente.
+   ========================================================= */
+
+const GROQ_KEY = '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';
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+const MODELS = {
+  fast:  'llama-3.1-8b-instant',
+  think: 'llama-3.3-70b-versatile',
+  code:  'llama-3.3-70b-versatile'
+};
+
+const MODE_LABEL = { fast:'RÁPIDA', think:'PENSATIVA', code:'CODE' };
+
+const SYSTEM = {
+  fast: 'Você é TRUX AI, um assistente de IA rápido e objetivo. Responda em português do Brasil de forma clara, curta e direta. Use markdown quando ajudar. Nada de enrolação.',
+  think: 'Você é TRUX AI, um assistente de IA analítico e cuidadoso. Pense antes de responder, estruture raciocínios complexos em etapas, mostre o porquê das conclusões e considere nuances e exceções. Responda em português do Brasil com markdown bem organizado.',
+  code: 'Você é TRUX AI no modo CODE, um engenheiro de software sênior. Sempre entregue código completo, funcional e pronto para uso, dentro de blocos de código com a linguagem indicada. Explique brevemente o que o código faz e como usar. Responda em português do Brasil.'
+};
+
+const STORE_KEY = 'trux_state_v1';
+
+let state = { chats: [], activeId: null, mode: 'fast' };
+let busy = false;
+let imageMode = false;
+let lastCodeOutput = '';
+
+/* ---------- ícones SVG (brancos) ---------- */
+const ICON = {
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>',
+  branch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M12 6v13"/></svg>'
+};
+
+/* ---------- helpers ---------- */
+const $ = (id) => document.getElementById(id);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+let toastTimer;
+function toast(msg){
+  const t = $('toast');
+  t.innerHTML = '<span class="dot"></span>' + escapeHtml(msg);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ---------- persistência (somente sessão) ---------- */
+function save(){
+  try { sessionStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){}
+}
+function loadStore(){
+  try {
+    const raw = sessionStorage.getItem(STORE_KEY);
+    if (raw){
+      const s = JSON.parse(raw);
+      if (s && Array.isArray(s.chats)) state = s;
+    }
+  } catch(e){}
+}
+
+/* =========================================================
+   MARKDOWN SIMPLES
+   ========================================================= */
+function renderInline(text){
+  let t = escapeHtml(text);
+
+  t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  t = t.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
+  t = t.replace(/^###\s+(.*)$/gm, '<h4>$1</h4>');
+  t = t.replace(/^##\s+(.*)$/gm, '<h3>$1</h3>');
+  t = t.replace(/^#\s+(.*)$/gm, '<h3>$1</h3>');
+
+  // listas
+  t = t.replace(/(?:^|\n)((?:[ \t]*[-*]\s+.*(?:\n|$))+)/g, (m, block) => {
+    const items = block.trim().split('\n')
+      .map(l => '<li>' + l.replace(/^[ \t]*[-*]\s+/, '') + '</li>').join('');
+    return '\n<ul>' + items + '</ul>\n';
+  });
+
+  // parágrafos
+  t = t.split(/\n{2,}/).map(p => {
+    const trimmed = p.trim();
+    if (!trimmed) return '';
+    if (/^<(h3|h4|ul|pre|blockquote)/.test(trimmed)) return trimmed;
+    return '<p>' + trimmed.replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+
+  return t;
+}
+
+function renderMD(text){
+  if (!text) return '';
+  let html = '';
+  const parts = String(text).split(/```/);
+  for (let i = 0; i < parts.length; i++){
+    if (i % 2 === 1){
+      let code = parts[i];
+      let lang = '';
+      const nl = code.indexOf('\n');
+      if (nl > -1){
+        const first = code.slice(0, nl).trim();
+        if (/^[\w+#.-]{0,20}$/.test(first)){ lang = first; code = code.slice(nl + 1); }
+      }
+      html += '<pre data-lang="' + escapeHtml(lang) + '"><code>' + escapeHtml(code.replace(/\n$/, '')) + '</code></pre>';
+    } else {
+      html += renderInline(parts[i]);
+    }
+  }
+  return html;
+}
+
+function attachCodeCopy(root){
+  root.querySelectorAll('pre').forEach(pre => {
+    if (pre.querySelector('.pre-copy')) return;
+    const btn = document.createElement('button');
+    btn.className = 'pre-copy';
+    btn.title = 'Copiar código';
+    btn.innerHTML = ICON.copy;
+    btn.addEventListener('click', () => {
+      const codeEl = pre.querySelector('code');
+      copyText(codeEl ? codeEl.textContent : '');
+    });
+    pre.appendChild(btn);
+  });
+}
+
+function copyText(txt){
+  if (!txt) { toast('Nada para copiar'); return; }
+  if (navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(() => toast('Copiado')).catch(() => fallbackCopy(txt));
+  } else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  const ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); toast('Copiado'); } catch(e){ toast('Não foi possível copiar'); }
+  document.body.removeChild(ta);
+}
+
+function downloadTxt(name, content){
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name.endsWith('.txt') ? name : name + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+
+/* =========================================================
+   ESTADO / CHATS
+   ========================================================= */
+function activeChat(){
+  return state.chats.find(c => c.id === state.activeId) || null;
+}
+
+function createChat(silent){
+  const c = {
+    id: uid(),
+    title: 'Novo chat',
+    mode: state.mode || 'fast',
+    messages: [],
+    createdAt: Date.now()
+  };
+  state.chats.unshift(c);
+  state.activeId = c.id;
+  save();
+  if (!silent) renderAll();
+  return c;
+}
+
+function deleteChat(id){
+  const chat = state.chats.find(c => c.id === id);
+  if (!chat) return;
+  if (!confirm('Apagar este chat? Esta ação não pode ser desfeita.')) return;
+  state.chats = state.chats.filter(c => c.id !== id);
+  if (state.activeId === id){
+    state.activeId = state.chats.length ? state.chats[0].id : null;
+  }
+  if (!state.chats.length) createChat(true);
+  save();
+  renderAll();
+  toast('Chat apagado');
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+function renderAll(){
+  renderChatList();
+  renderMessages();
+  renderModes();
+  renderTopbar();
+}
+
+function renderModes(){
+  const chat = activeChat();
+  const m = chat ? chat.mode : state.mode;
+  document.querySelectorAll('.mode').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === m);
+  });
+}
+
+function renderTopbar(){
+  const chat = activeChat();
+  const el = $('topTitle');
+  if (!chat){ el.textContent = 'TRUX AI'; return; }
+  const title = chat.title || 'Novo chat';
+  el.innerHTML = escapeHtml(title) +
+    '<span class="mode-tag">' + (MODE_LABEL[chat.mode] || 'RÁPIDA') + '</span>';
+}
+
+function renderChatList(){
+  const el = $('chatList');
+  el.innerHTML = '';
+  if (!state.chats.length){
+    el.innerHTML = '<div class="empty-list">Nenhum chat ainda</div>';
+    return;
+  }
+  state.chats.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chat-item' + (c.id === state.activeId ? ' active' : '');
+    item.innerHTML =
+      '<span class="ci-icon">' + ICON.chat + '</span>' +
+      '<span class="ci-title">' + escapeHtml(c.title || 'Novo chat') + '</span>' +
+      '<span class="ci-actions">' +
+        '<button class="icon-btn" data-act="branch" title="Criar branch">' + ICON.branch + '</button>' +
+        '<button class="icon-btn danger" data-act="delete" title="Apagar chat">' + ICON.trash + '</button>' +
+      '</span>';
+
+    item.addEventListener('click', (e) => {
+      const act = e.target.closest('[data-act]');
+      if (act){
+        e.stopPropagation();
+        if (act.dataset.act === 'branch') branchChat(c.id);
+        else deleteChat(c.id);
+        return;
+      }
+      state.activeId = c.id;
+      save();
+      renderAll();
+      closeSidebar();
+    });
+    el.appendChild(item);
+  });
+}
+
+function renderMessages(){
+  const el = $('messages');
+  const chat = activeChat();
+  el.innerHTML = '';
+
+  if (!chat || !chat.messages.length){
+    renderEmptyState(el);
+    return;
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap';
+  chat.messages.forEach(m => wrap.appendChild(buildMessage(m)));
+  el.appendChild(wrap);
+  scrollBottom(true);
+}
+
+function renderEmptyState(el){
+  const div = document.createElement('div');
+  div.className = 'empty';
+  div.innerHTML =
+    '<div class="empty-mark">' + ICON.spark + '</div>' +
+    '<h1>TRUX AI</h1>' +
+    '<p>Sem login, sem rastreio, sem histórico. Suas conversas existem apenas nesta sessão e desaparecem quando você sai.</p>' +
+    '<div class="chips">' +
+      '<button class="chip" data-p="Explique computação quântica de forma simples">Explique computação quântica</button>' +
+      '<button class="chip" data-p="Escreva um roteiro curto sobre solidão urbana">Roteiro sobre solidão urbana</button>' +
+      '<button class="chip" data-p="Me dê 5 ideias de projetos em JavaScript">Ideias de projetos em JS</button>' +
+      '<button class="chip" data-p="Resuma a história da internet em 10 linhas">História da internet</button>' +
+    '</div>';
+
+  div.querySelectorAll('.chip').forEach(ch => {
+    ch.addEventListener('click', () => {
+      $('input').value = ch.dataset.p;
+      autoGrow($('input'));
+      updateSendBtn();
+      $('input').focus();
+    });
+  });
+
+  el.appendChild(div);
+}
+
+function buildMessage(m){
+  const d = document.createElement('div');
+  d.className = 'msg ' + (m.role === 'user' ? 'user' : 'ai');
+
+  const av = document.createElement('div');
+  av.className = 'avatar';
+  av.textContent = m.role === 'user' ? 'EU' : 'TRUX';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+
+  if (m.type === 'image'){
+    bubble.appendChild(buildImageCard(m));
+  } else {
+    bubble.innerHTML = renderMD(m.content || '');
+    attachCodeCopy(bubble);
+  }
+
+  d.appendChild(av);
+  d.appendChild(bubble);
+  return d;
+}
+
+function buildImageCard(m){
+  const card = document.createElement('div');
+  card.className = 'img-card';
+
+  const prompt = document.createElement('div');
+  prompt.className = 'img-prompt';
+  prompt.textContent = m.prompt;
+  card.appendChild(prompt);
+
+  const shell = document.createElement('div');
+  shell.className = 'img-shell';
+
+  const loading = document.createElement('div');
+  loading.className = 'img-loading';
+  loading.textContent = 'Gerando';
+  shell.appendChild(loading);
+
+  const img = document.createElement('img');
+  img.alt = m.prompt;
+  img.loading = 'lazy';
+  img.addEventListener('load', () => {
+    img.classList.add('loaded');
+    loading.remove();
+  });
+  img.addEventListener('error', () => {
+    loading.textContent = 'Falha ao carregar';
+    loading.style.color = '#ff6b6b';
+  });
+  img.src = m.url;
+  shell.appendChild(img);
+  card.appendChild(shell);
+
+  const actions = document.createElement('div');
+  actions.className = 'img-actions';
+
+  const dl = document.createElement('button');
+  dl.className = 'chip-btn';
+  dl.innerHTML = ICON.download + 'Baixar imagem';
+  dl.addEventListener('click', () => downloadImage(m.url, m.prompt));
+  actions.appendChild(dl);
+
+  const regen = document.createElement('button');
+  regen.className = 'chip-btn';
+  regen.innerHTML = ICON.image + 'Regenerar';
+  regen.addEventListener('click', () => {
+    if (busy) return;
+    generateImage(m.prompt, true);
+  });
+  actions.appendChild(regen);
+
+  card.appendChild(actions);
+  return card;
+}
+
+function scrollBottom(force){
+  const el = $('messages');
+  if (!el) return;
+  if (force || (el.scrollHeight - el.scrollTop - el.clientHeight < 220)){
+    el.scrollTop = el.scrollHeight;
+  }
+}
+
+/* =========================================================
+   GROQ API
+   ========================================================= */
+async function groqStream(messages, model, onChunk){
+  const res = await fetch(GROQ_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + GROQ_KEY
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      stream: true,
+      temperature: 0.7,
+      max_tokens: 4096
+    })
+  });
+
+  if (!res.ok){
+    let detail = '';
+    try { detail = (await res.text()).slice(0, 200); } catch(e){}
+    throw new Error('API ' + res.status + (detail ? ' — ' + detail : ''));
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let full = '';
+  let buf = '';
+
+  while (true){
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines){
+      const t = line.trim();
+      if (!t.startsWith('data:')) continue;
+      const payload = t.slice(5).trim();
+      if (!payload || payload === '[DONE]') continue;
+      try {
+        const json = JSON.parse(payload);
+        const delta = json.choices && json.choices[0] && json.choices[0].delta;
+        if (delta && delta.content){
+          full += delta.content;
+          onChunk(delta.content);
+        }
+      } catch(e){ /* ignora chunks parciais */ }
+    }
+  }
+  return full;
+}
+
+async function groqOnce(messages, model, maxTokens){
+  const res = await fetch(GROQ_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + GROQ_KEY
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature: 0.4,
+      max_tokens: maxTokens || 900
+    })
+  });
+  if (!res.ok) throw new Error('API ' + res.status);
+  const json = await res.json();
+  return json.choices[0].message.content;
+}
+
+/* =========================================================
+   ENVIO DE MENSAGEM
+   ========================================================= */
+async function sendMessage(){
+  const chat = activeChat();
+  if (!chat || busy) return;
+
+  const ta = $('input');
+  const text = ta.value.trim();
+  if (!text) return;
+
+  ta.value = '';
+  autoGrow(ta);
+  updateSendBtn();
+
+  if (imageMode){
+    await generateImage(text);
+    return;
+  }
+
+  chat.messages.push({ role: 'user', content: text });
+  if (!chat.title || chat.title === 'Novo chat'){
+    chat.title = text.slice(0, 46);
+  }
+  save();
+  renderAll();
+
+  const apiMessages = [{ role: 'system', content: SYSTEM[chat.mode] || SYSTEM.fast }];
+  chat.messages.forEach(m => {
+    if (m.type === 'image') return;
+    if (!m.content) return;
+    apiMessages.push({ role: m.role, content: m.content });
+  });
+
+  chat.messages.push({ role: 'assistant', content: '' });
+  save();
+  renderAll();
+
+  const bubbles = document.querySelectorAll('.msg.ai .bubble');
+  const target = bubbles[bubbles.length - 1];
+  if (!target) return;
+
+  busy = true;
+  updateSendBtn();
+  target.innerHTML = '<span class="caret"></span>';
+
+  let acc = '';
+  let lastPaint = 0;
+
+  try {
+    await groqStream(apiMessages, MODELS[chat.mode] || MODELS.fast, (chunk) => {
+      acc += chunk;
+      const now = performance.now();
+      if (now - lastPaint > 55){
+        lastPaint = now;
+        target.innerHTML = renderMD(acc) + '<span class="caret"></span>';
+        scrollBottom();
+      }
+    });
+    target.innerHTML = renderMD(acc);
+    attachCodeCopy(target);
+    chat.messages[chat.messages.length - 1].content = acc;
+    save();
+    scrollBottom();
+  } catch (err){
+    target.innerHTML = '<span class="err">Erro: ' + escapeHtml(err.message) + '</span>';
+    chat.messages[chat.messages.length - 1].content = 'Erro: ' + err.message;
+    save();
+  } finally {
+    busy = false;
+    updateSendBtn();
+  }
+}
+
+/* =========================================================
+   BRANCH A PARTIR DE RESUMO
+   ========================================================= */
+async function branchChat(id){
+  const chat = state.chats.find(c => c.id === id);
+  if (!chat) return;
+  if (busy){ toast('Aguarde a resposta atual terminar'); return; }
+  if (!chat.messages.filter(m => m.content).length){
+    toast('Este chat está vazio');
+    return;
+  }
+
+  busy = true;
+  updateSendBtn();
+  toast('Resumindo o chat para criar o branch...');
+
+  const transcript = chat.messages
+    .filter(m => m.type !== 'image' && m.content)
+    .map(m => (m.role === 'user' ? 'USUÁRIO: ' : 'TRUX AI: ') + m.content)
+    .join('\n\n')
+    .slice(0, 9000);
+
+  let summary = '';
+  try {
+    summary = await groqOnce([
+      { role: 'system', content: 'Você é um assistente que resume conversas com precisão. Seja objetivo e preserve todo o contexto útil.' },
+      { role: 'user', content:
+        'Resuma a conversa abaixo em português do Brasil. Preserve: o tema central, decisões tomadas, fatos e dados citados, preferências do usuário e pendências. ' +
+        'Use no máximo 350 palavras, em tópicos markdown.\n\n---\n' + transcript }
+    ], MODELS.fast, 900);
+  } catch (err){
+    toast('Falha ao resumir: ' + err.message);
+    busy = false;
+    updateSendBtn();
+    return;
+  }
+
+  const newChat = {
+    id: uid(),
+    title: (chat.title || 'Chat').slice(0, 34) + ' · branch',
+    mode: chat.mode,
+    branchOf: chat.id,
+    createdAt: Date.now(),
+    messages: [
+      {
+        role: 'assistant',
+        type: 'summary',
+        content: '**Resumo do chat anterior**\n\n' + summary + '\n\n*Este branch continua a partir do resumo acima.*'
+      }
+    ]
+  };
+
+  state.chats.unshift(newChat);
+  state.activeId = newChat.id;
+  save();
+  renderAll();
+  busy = false;
+  updateSendBtn();
+  toast('Branch criado a partir do resumo');
+}
+
+/* =========================================================
+   GERAÇÃO DE IMAGEM (Pollinations)
+   ========================================================= */
+async function generateImage(prompt, isRegen){
+  const chat = activeChat();
+  if (!chat) return;
+
+  const clean = prompt.trim();
+  if (!clean) return;
+
+  if (!isRegen){
+    chat.messages.push({ role: 'user', content: 'Gerar imagem: ' + clean });
+    if (!chat.title || chat.title === 'Novo chat'){
+      chat.title = 'Imagem: ' + clean.slice(0, 32);
+    }
+  }
+
+  const seed = Math.floor(Math.random() * 1000000);
+  const url = 'https://image.pollinations.ai/prompt/' +
+    encodeURIComponent(clean) +
+    '?width=1024&height=1024&nologo=true&model=flux&seed=' + seed;
+
+  chat.messages.push({ role: 'assistant', type: 'image', prompt: clean, url });
+  save();
+  renderAll();
+  toast('Gerando imagem...');
+}
+
+async function downloadImage(url, prompt){
+  const safe = (prompt || 'trux-imagem').replace(/[^\w\s-]/g, '').trim().slice(0, 48).replace(/\s+/g, '-') || 'trux-imagem';
+  try {
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error('fetch fail');
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = safe + '.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Imagem baixada');
+  } catch (e){
+    window.open(url, '_blank', 'noopener');
+    toast('Abrindo imagem em nova aba');
+  }
+}
+
+/* =========================================================
+   EXPORTAÇÃO
+   ========================================================= */
+function chatToText(chat, index){
+  let t = '';
+  t += '============================================================\n';
+  t += 'CHAT ' + (index != null ? '#' + (index + 1) + ' — ' : '') + (chat.title || 'Sem título') + '\n';
+  t += 'Modo: ' + (MODE_LABEL[chat.mode] || 'RÁPIDA') + '\n';
+  t += 'Criado em: ' + new Date(chat.createdAt || Date.now()).toLocaleString('pt-BR') + '\n';
+  if (chat.branchOf) t += 'Branch do chat: ' + chat.branchOf + '\n';
+  t += '============================================================\n\n';
+
+  chat.messages.forEach(m => {
+    if (m.type === 'image'){
+      t += '[IMAGEM GERADA]\nPrompt: ' + m.prompt + '\nURL: ' + m.url + '\n\n';
+      return;
+    }
+    t += (m.role === 'user' ? 'USUÁRIO:' : 'TRUX AI:') + '\n' + (m.content || '') + '\n\n';
+  });
+  t += '\n';
+  return t;
+}
+
+function downloadCurrentChat(){
+  const chat = activeChat();
+  if (!chat || !chat.messages.length){ toast('Nada para baixar neste chat'); return; }
+  downloadTxt('trux-ai-' + (chat.title || 'chat').replace(/[^\w\s-]/g, '').trim().slice(0, 40).replace(/\s+/g, '-').toLowerCase(),
+    chatToText(chat));
+  toast('Chat baixado em .TXT');
+}
+
+function downloadAllChats(){
+  if (!state.chats.length){ toast('Nenhuma conversa para exportar'); return; }
+  let txt = 'TRUX AI — EXPORTAÇÃO DE CONVERSAS\n';
+  txt += 'Gerado em: ' + new Date().toLocaleString('pt-BR') + '\n';
+  txt += 'Total de conversas: ' + state.chats.length + '\n';
+  txt += 'Este arquivo foi gerado localmente no seu navegador.\n\n\n';
+
+  state.chats.slice().reverse().forEach((c, i) => {
+    txt += chatToText(c, i);
+  });
+
+  txt += '— FIM DA EXPORTAÇÃO —\n';
+  downloadTxt('trux-ai-conversas', txt);
+  toast('Todas as conversas baixadas');
+}
+
+/* =========================================================
+   APAGAR DADOS
+   ========================================================= */
+function wipeAllData(){
+  if (!confirm('Apagar TODOS os dados locais?\n\nIsso remove permanentemente todos os chats, imagens e configurações deste navegador. Não pode ser desfeito.')) return;
+
+  try { sessionStorage.clear(); } catch(e){}
+  try { localStorage.clear(); } catch(e){}
+
+  state = { chats: [], activeId: null, mode: 'fast' };
+  imageMode = false;
+  setImageMode(false);
+  createChat(true);
+  save();
+  renderAll();
+  toast('Todos os dados locais foram apagados');
+}
+
+/* =========================================================
+   MODO CODE — JANELA
+   ========================================================= */
+function openCodeModal(){
+  $('codeOverlay').classList.add('open');
+  setTimeout(() => $('codeInput').focus(), 60);
+}
+function closeCodeModal(){
+  $('codeOverlay').classList.remove('open');
+}
+
+async function runCode(){
+  const input = $('codeInput');
+  const out = $('codeOut');
+  const req = input.value.trim();
+  if (!req) return;
+  if (out.dataset.running === '1') return;
+
+  out.dataset.running = '1';
+  $('codeSend').disabled = true;
+  out.textContent = '';
+  out.classList.add('streaming');
+  lastCodeOutput = '';
+
+  let acc = '';
+  try {
+    await groqStream([
+      { role: 'system', content: SYSTEM.code },
+      { role: 'user', content: req }
+    ], MODELS.code, (chunk) => {
+      acc += chunk;
+      out.textContent = acc;
+      out.scrollTop = out.scrollHeight;
+    });
+    lastCodeOutput = acc;
+    toast('Código gerado');
+  } catch (err){
+    out.textContent = 'Erro: ' + err.message;
+    lastCodeOutput = out.textContent;
+  } finally {
+    out.classList.remove('streaming');
+    out.dataset.running = '0';
+    $('codeSend').disabled = false;
+  }
+}
+
+/* =========================================================
+   COMPOSER
+   ========================================================= */
+function autoGrow(ta){
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 180) + 'px';
+}
+
+function updateSendBtn(){
+  const has = $('input').value.trim().length > 0;
+  $('btnSend').disabled = !has || busy;
+}
+
+function setImageMode(on){
+  imageMode = on;
+  $('btnImg').classList.toggle('on', on);
+  $('composer').classList.toggle('img-mode', on);
+  $('input').placeholder = on
+    ? 'Descreva a imagem que você quer gerar...'
+    : 'Pergunte alguma coisa para a TRUX AI...';
+}
+
+/* =========================================================
+   SIDEBAR MOBILE
+   ========================================================= */
+function openSidebar(){
+  $('sidebar').classList.add('open');
+  $('scrim').classList.add('open');
+}
+function closeSidebar(){
+  $('sidebar').classList.remove('open');
+  $('scrim').classList.remove('open');
+}
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+function bindEvents(){
+
+  $('btnNew').addEventListener('click', () => {
+    createChat();
+    closeSidebar();
+    $('input').focus();
+  });
+
+  $('btnMenu').addEventListener('click', openSidebar);
+  $('scrim').addEventListener('click', closeSidebar);
+
+  // modos
+  document.querySelectorAll('.mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      state.mode = mode;
+      const chat = activeChat();
+      if (chat) chat.mode = mode;
+      save();
+      renderModes();
+      renderTopbar();
+      if (mode === 'code') openCodeModal();
+      closeSidebar();
+    });
+  });
+
+  // topbar
+  $('btnBranch').addEventListener('click', () => {
+    const chat = activeChat();
+    if (chat) branchChat(chat.id);
+  });
+  $('btnDownloadChat').addEventListener('click', downloadCurrentChat);
+  $('btnDeleteChat').addEventListener('click', () => {
+    const chat = activeChat();
+    if (chat) deleteChat(chat.id);
+  });
+
+  // sidebar footer
+  $('btnExportAll').addEventListener('click', downloadAllChats);
+  $('btnWipe').addEventListener('click', wipeAllData);
+
+  // composer
+  const input = $('input');
+  input.addEventListener('input', () => { autoGrow(input); updateSendBtn(); });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      if (!busy && input.value.trim()) sendMessage();
+    }
+  });
+  $('btnSend').addEventListener('click', sendMessage);
+  $('btnImg').addEventListener('click', () => {
+    setImageMode(!imageMode);
+    $('input').focus();
+  });
+
+  // modal code
+  $('codeClose').addEventListener('click', closeCodeModal);
+  $('codeOverlay').addEventListener('click', (e) => {
+    if (e.target === $('codeOverlay')) closeCodeModal();
+  });
+  $('codeSend').addEventListener('click', runCode);
+  $('codeInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      runCode();
+    }
+  });
+  $('codeInput').addEventListener('input', () => {
+    const ta = $('codeInput');
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(ta.scrollHeight, 130) + 'px';
+  });
+  $('codeCopy').addEventListener('click', () => copyText(lastCodeOutput || $('codeOut').textContent));
+  $('codeDownload').addEventListener('click', () => {
+    const content = lastCodeOutput || $('codeOut').textContent;
+    if (!content.trim()){ toast('Nada para baixar'); return; }
+    downloadTxt('trux-ai-codigo', content);
+    toast('Código baixado em .TXT');
+  });
+
+  // atalhos
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCodeModal();
+  });
+
+  // fecha sidebar ao girar/redimensionar
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 880) closeSidebar();
+  });
+}
+
+/* =========================================================
+   INICIALIZAÇÃO
+   ========================================================= */
+function init(){
+  // Regra do app: nada persiste entre visitas.
+  try { localStorage.clear(); } catch(e){}
+
+  loadStore();
+
+  if (!state.chats.length){
+    createChat(true);
+  } else {
+    if (!state.activeId || !state.chats.some(c => c.id === state.activeId)){
+      state.activeId = state.chats[0].id;
+    }
+  }
+
+  const chat = activeChat();
+  state.mode = chat ? chat.mode : (state.mode || 'fast');
+
+  bindEvents();
+  renderAll();
+  updateSendBtn();
+  save();
+}
+
+init();
+</script>
+</body>
+</html>
