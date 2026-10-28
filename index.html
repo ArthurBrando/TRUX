@@ -2,227 +2,215 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>TRUX AI</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#000000; --surface:#0a0a0a; --surface2:#111111; --surface3:#181818;
-    --border:#232323; --border2:#2e2e2e; --text:#f5f5f5; --muted:#8c8c8c;
-    --orange:#ff6b00; --orange-hi:#ff8226; --orange-deep:#e85d00;
-    --orange-soft:rgba(255,107,0,.12); --orange-glow:rgba(255,107,0,.35);
-    --ease:cubic-bezier(.22,1,.36,1);
-  }
-  html,body{height:100%}
-  body{
-    background:var(--bg);color:var(--text);overflow:hidden;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;position:relative;overflow:hidden}
-  textarea,input,select{font-family:inherit}
-  svg{display:block;flex-shrink:0}
-  ::selection{background:rgba(255,107,0,.4);color:#fff}
-  *::-webkit-scrollbar{width:9px;height:9px}
-  *::-webkit-scrollbar-track{background:transparent}
-  *::-webkit-scrollbar-thumb{background:#282828;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#181818;
+  --border:#232323;--text:#f5f5f5;
+  --orange:#ff6b00;--orange-hi:#ff8226;--orange-deep:#e85d00;
+  --orange-soft:rgba(255,107,0,.12);--orange-glow:rgba(255,107,0,.35);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;position:relative;overflow:hidden}
+textarea,input,select{font-family:inherit}
+svg{display:block;flex-shrink:0}
+::selection{background:rgba(255,107,0,.4);color:#fff}
+*::-webkit-scrollbar{width:9px;height:9px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:#282828;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
 
-  /* BACKGROUND ORBS */
-  .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .bg-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.12}
-  .bg-orb.a{width:520px;height:520px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);top:-200px;left:-120px;animation:driftA 28s ease-in-out infinite}
-  .bg-orb.b{width:620px;height:620px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);bottom:-320px;right:-180px;animation:driftB 34s ease-in-out infinite}
-  @keyframes driftA{0%,100%{transform:translate(0,0)}50%{transform:translate(180px,140px)}}
-  @keyframes driftB{0%,100%{transform:translate(0,0)}50%{transform:translate(-200px,-140px)}}
+/* ORBS */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.12}
+.bg-orb.a{width:520px;height:520px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);top:-200px;left:-120px;animation:driftA 28s ease-in-out infinite}
+.bg-orb.b{width:620px;height:620px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);bottom:-320px;right:-180px;animation:driftB 34s ease-in-out infinite}
+@keyframes driftA{0%,100%{transform:translate(0,0)}50%{transform:translate(180px,140px)}}
+@keyframes driftB{0%,100%{transform:translate(0,0)}50%{transform:translate(-200px,-140px)}}
 
-  .app{display:flex;height:100dvh;width:100%;position:relative;z-index:1}
+.app{display:flex;height:100dvh;width:100%;position:relative;z-index:1}
 
-  /* SIDEBAR */
-  .sidebar{width:300px;flex:0 0 300px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;z-index:60;position:relative}
-  .sidebar-head{padding:20px 16px 16px;display:flex;align-items:center;gap:12px}
-  .logo-mark{width:36px;height:36px;border-radius:11px;background:#000;border:1.5px solid var(--orange);display:grid;place-items:center;box-shadow:0 0 18px var(--orange-glow)}
-  .logo-mark svg{width:19px;height:19px;color:var(--orange)}
-  .brand-name{font-size:15px;font-weight:800;letter-spacing:.2em;background:linear-gradient(135deg,#fff,#ffb27a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .brand-sub{font-size:9.5px;letter-spacing:.18em;color:#6e6e6e;font-weight:600;text-transform:uppercase}
+/* SIDEBAR */
+.sidebar{width:300px;flex:0 0 300px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;z-index:60;position:relative}
+.sidebar-head{padding:20px 16px 16px;display:flex;align-items:center;gap:12px}
+.logo-mark{width:36px;height:36px;border-radius:11px;background:#000;border:1.5px solid var(--orange);display:grid;place-items:center;box-shadow:0 0 18px var(--orange-glow)}
+.logo-mark svg{width:19px;height:19px;color:var(--orange)}
+.brand-name{font-size:15px;font-weight:800;letter-spacing:.2em;background:linear-gradient(135deg,#fff,#ffb27a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.brand-sub{font-size:9.5px;letter-spacing:.18em;color:#6e6e6e;font-weight:600;text-transform:uppercase;display:block;margin-top:2px}
 
-  .section-label{padding:0 18px 9px;font-size:9.5px;letter-spacing:.2em;color:#5a5a5a;font-weight:700;text-transform:uppercase}
+.section-label{padding:0 18px 9px;font-size:9.5px;letter-spacing:.2em;color:#5a5a5a;font-weight:700;text-transform:uppercase}
 
-  .tool-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
-  .tool-btn{
-    display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;
-    font-size:12.5px;color:#c9c9c9;cursor:pointer;border:1px solid transparent;
-    transition:all .18s var(--ease);width:100%;text-align:left;margin-bottom:2px;
-  }
-  .tool-btn:hover{background:var(--surface2);color:#fff}
-  .tool-btn.active{background:var(--surface3);color:#fff;border-color:#2c2c2c}
-  .tool-btn svg{width:16px;height:16px;color:var(--orange);opacity:.9}
-  .tool-btn .badge{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 6px;border-radius:5px;background:rgba(255,107,0,.15);color:var(--orange)}
-  .tool-btn .badge.warn{background:rgba(255,200,0,.12);color:#ffc800}
+.tool-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
+.tool-btn{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-size:12.5px;color:#c9c9c9;cursor:pointer;border:1px solid transparent;transition:all .18s var(--ease);width:100%;text-align:left;margin-bottom:2px}
+.tool-btn:hover{background:var(--surface2);color:#fff}
+.tool-btn.active{background:var(--surface3);color:#fff;border-color:#2c2c2c}
+.tool-btn svg{width:16px;height:16px;color:var(--orange);opacity:.9}
+.tool-btn .tool-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tool-btn .badge{font-size:8.5px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:5px;background:rgba(255,107,0,.15);color:var(--orange);text-transform:uppercase;flex-shrink:0}
+.tool-btn .badge.warn{background:rgba(255,200,0,.12);color:#ffc800}
+.tool-btn .badge.key{background:rgba(255,60,60,.12);color:#ff6b6b}
 
-  .sidebar-foot{border-top:1px solid var(--border);padding:10px 9px;display:flex;flex-direction:column;gap:2px}
-  .foot-btn{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;font-size:12.5px;color:#b3b3b3;text-decoration:none;transition:all .18s;font-weight:500;width:100%;text-align:left}
-  .foot-btn svg{width:16px;height:16px;color:#fff;opacity:.7}
-  .foot-btn:hover{background:var(--surface2);color:#fff}
-  .foot-btn.danger:hover{background:rgba(255,60,60,.1);color:#ff6b6b}
-  .foot-btn.discord:hover{background:rgba(88,101,242,.14);color:#fff}
+.sidebar-foot{border-top:1px solid var(--border);padding:10px 9px;display:flex;flex-direction:column;gap:2px}
+.foot-btn{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;font-size:12.5px;color:#b3b3b3;text-decoration:none;transition:all .18s;font-weight:500;width:100%;text-align:left}
+.foot-btn svg{width:16px;height:16px;color:#fff;opacity:.7}
+.foot-btn:hover{background:var(--surface2);color:#fff}
+.foot-btn.danger:hover{background:rgba(255,60,60,.1);color:#ff6b6b}
+.foot-btn.discord:hover{background:rgba(88,101,242,.14);color:#fff}
 
-  /* MAIN */
-  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:#000}
-  .topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.72);backdrop-filter:blur(14px);z-index:20}
-  .btn-menu{display:none;width:34px;height:34px;border-radius:9px;place-items:center;color:#fff}
-  .btn-menu svg{width:19px;height:19px}
-  .topbar-title{flex:1;font-size:13.5px;font-weight:600;color:#e6e6e6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .topbar-actions{display:flex;gap:2px}
-  .icon-btn{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;transition:all .18s}
-  .icon-btn svg{width:15px;height:15px;opacity:.7}
-  .icon-btn:hover{background:#252525;transform:scale(1.08)}
-  .icon-btn.danger:hover{background:rgba(255,60,60,.16)}
-  .icon-btn.danger:hover svg{color:#ff5a5a;opacity:1}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:#000}
+.topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.72);backdrop-filter:blur(14px);z-index:20}
+.btn-menu{display:none;width:34px;height:34px;border-radius:9px;place-items:center;color:#fff}
+.btn-menu svg{width:19px;height:19px}
+.topbar-title{flex:1;font-size:13.5px;font-weight:600;color:#e6e6e6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-actions{display:flex;gap:2px}
+.icon-btn{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;transition:all .18s}
+.icon-btn svg{width:15px;height:15px;opacity:.7}
+.icon-btn:hover{background:#252525;transform:scale(1.08)}
+.icon-btn.danger:hover{background:rgba(255,60,60,.16)}
+.icon-btn.danger:hover svg{color:#ff5a5a;opacity:1}
 
-  .messages{flex:1;overflow-y:auto;padding:26px 0 8px;min-height:0;position:relative;z-index:1}
-  .msg-wrap{max-width:860px;margin:0 auto;padding:0 20px}
-  .msg{display:flex;gap:12px;margin-bottom:24px;animation:fadeUp .35s var(--ease) both}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
-  .msg.user{flex-direction:row-reverse}
-  .avatar{width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;font-size:9px;font-weight:800}
-  .msg.user .avatar{background:#1a1a1a;color:#fff;border:1px solid #2e2e2e}
-  .msg.ai .avatar{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;box-shadow:0 2px 12px rgba(255,107,0,.35)}
-  .bubble{max-width:calc(100% - 56px);font-size:14.5px;line-height:1.68;overflow-wrap:anywhere}
-  .msg.user .bubble{background:linear-gradient(135deg,#1a1a1a,#141414);border:1px solid var(--border);padding:11px 16px;border-radius:15px;border-top-right-radius:5px}
-  .msg.ai .bubble{padding:1px 0;border-radius:15px;border-top-left-radius:5px}
-  .bubble p{margin:0 0 11px} .bubble p:last-child{margin-bottom:0}
-  .bubble pre{position:relative;background:#080808;border:1px solid var(--border);border-radius:11px;padding:14px 15px;overflow-x:auto;margin:12px 0}
-  .bubble pre code{background:none;border:none;padding:0;font-size:12.5px;color:#e4e4e4;display:block;white-space:pre}
-  .bubble code{font-family:ui-monospace,monospace;background:#161616;border:1px solid #262626;padding:2px 6px;border-radius:5px;font-size:12.5px;color:#ffb27a}
-  .bubble ul{margin:0 0 11px;padding-left:20px} .bubble li::marker{color:var(--orange)}
-  .typing{display:inline-flex;gap:5px;padding:6px 0}
-  .typing span{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:typingBounce 1.3s ease-in-out infinite}
-  .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
-  @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-6px);opacity:1}}
-  .caret{display:inline-block;width:2px;height:1.05em;background:var(--orange);vertical-align:text-bottom;margin-left:1px;animation:blink 1s steps(2) infinite}
-  @keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+.messages{flex:1;overflow-y:auto;padding:26px 0 8px;min-height:0;position:relative;z-index:1}
+.msg-wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.msg{display:flex;gap:12px;margin-bottom:24px;animation:fadeUp .35s var(--ease) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.msg.user{flex-direction:row-reverse}
+.avatar{width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;font-size:9px;font-weight:800}
+.msg.user .avatar{background:#1a1a1a;color:#fff;border:1px solid #2e2e2e}
+.msg.ai .avatar{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;box-shadow:0 2px 12px rgba(255,107,0,.35)}
+.bubble{max-width:calc(100% - 56px);font-size:14.5px;line-height:1.68;overflow-wrap:anywhere;min-width:0}
+.msg.user .bubble{background:linear-gradient(135deg,#1a1a1a,#141414);border:1px solid var(--border);padding:11px 16px;border-radius:15px;border-top-right-radius:5px}
+.msg.ai .bubble{padding:1px 0}
+.bubble p{margin:0 0 11px}.bubble p:last-child{margin-bottom:0}
+.bubble strong{color:#fff}
+.bubble ul{padding-left:20px;margin:0 0 11px}
+.bubble li::marker{color:var(--orange)}
+.bubble pre{position:relative;background:#080808;border:1px solid var(--border);border-radius:11px;padding:14px 15px;overflow-x:auto;margin:12px 0}
+.bubble pre code{background:none;border:none;padding:0;font-size:12.5px;color:#e4e4e4;display:block;white-space:pre;font-family:ui-monospace,monospace}
+.bubble code{font-family:ui-monospace,monospace;background:#161616;border:1px solid #262626;padding:2px 6px;border-radius:5px;font-size:12.5px;color:#ffb27a}
+.bubble a{color:var(--orange);text-decoration:underline}
+.err{color:#ff6b6b;font-size:13px}
 
-  /* tool panel in chat */
-  .tool-panel{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0;max-width:520px}
-  .tool-panel h4{font-size:12px;letter-spacing:.1em;color:var(--orange);margin-bottom:10px;text-transform:uppercase}
-  .tool-panel .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-  .tool-panel .field label{font-size:10.5px;color:#8a8a8a;font-weight:600;letter-spacing:.05em}
-  .tool-panel input,.tool-panel select,.tool-panel textarea{background:#0a0a0a;border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
-  .tool-panel input:focus,.tool-panel select:focus,.tool-panel textarea:focus{border-color:var(--orange)}
-  .tool-panel .row{display:flex;gap:8px;flex-wrap:wrap}
-  .tool-panel .row > *{flex:1;min-width:100px}
-  .btn-run{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;padding:10px 18px;border-radius:9px;font-weight:800;font-size:12px;letter-spacing:.03em;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
-  .btn-run:hover{filter:brightness(1.1);box-shadow:0 4px 18px rgba(255,107,0,.4)}
-  .btn-run:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
-  .btn-run svg{width:14px;height:14px}
+.typing{display:inline-flex;gap:5px;padding:6px 0}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:typingBounce 1.3s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-6px);opacity:1}}
+.caret{display:inline-block;width:2px;height:1.05em;background:var(--orange);vertical-align:text-bottom;margin-left:1px;animation:blink 1s steps(2) infinite}
+@keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 
-  .media-result{margin-top:12px}
-  .media-result audio,.media-result video{width:100%;border-radius:10px;background:#000}
-  .media-result img{max-width:100%;border-radius:10px;display:block}
+/* TOOL PANEL */
+.tool-panel{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0;max-width:520px}
+.tool-panel h4{font-size:12px;letter-spacing:.1em;color:var(--orange);margin-bottom:12px;text-transform:uppercase}
+.tool-panel .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.tool-panel .field label{font-size:10.5px;color:#8a8a8a;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.tool-panel input,.tool-panel select,.tool-panel textarea{background:#0a0a0a;border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s;width:100%}
+.tool-panel input:focus,.tool-panel select:focus,.tool-panel textarea:focus{border-color:var(--orange)}
+.tool-panel .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tool-panel .row>input{flex:1;min-width:120px}
+.tool-panel img{width:100%;border-radius:10px;display:block;margin-top:10px}
+.tool-panel video{width:100%;border-radius:10px;display:block;margin-top:10px;background:#000}
+.tool-panel audio{width:100%;margin-top:10px}
+.tool-panel .panel-label{font-size:11px;color:#888;margin-bottom:8px;font-style:italic;padding-left:9px;border-left:2px solid var(--orange)}
 
-  .composer-wrap{padding:12px 20px 18px;background:linear-gradient(to top,#000 60%,transparent);flex-shrink:0;position:relative;z-index:2}
-  .composer{max-width:860px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:9px 10px;display:flex;align-items:flex-end;gap:6px;transition:all .25s var(--ease)}
-  .composer:focus-within{border-color:#3e3e3e;box-shadow:0 0 0 3px rgba(255,107,0,.08)}
-  .comp-btn{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:0 0 36px;color:#fff}
-  .comp-btn svg{width:18px;height:18px;opacity:.65}
-  .comp-btn:hover{background:#1f1f1f}
-  #input{flex:1;background:none;border:none;outline:none;color:var(--text);resize:none;font-size:14.5px;line-height:1.5;max-height:180px;min-height:24px;padding:7px 4px}
-  #input::placeholder{color:#6a6a6a}
-  .btn-send{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;display:grid;place-items:center;flex:0 0 38px;transition:all .2s;box-shadow:0 2px 10px rgba(255,107,0,.25)}
-  .btn-send svg{width:18px;height:18px}
-  .btn-send:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
-  .composer-hint{max-width:860px;margin:9px auto 0;text-align:center;font-size:10.5px;color:#4f4f4f}
-  .composer-hint kbd{background:#161616;border:1px solid #262626;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:10px;color:#8a8a8a}
+.btn-run{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;padding:10px 18px;border-radius:9px;font-weight:800;font-size:12px;letter-spacing:.03em;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
+.btn-run:hover{filter:brightness(1.1);box-shadow:0 4px 18px rgba(255,107,0,.4)}
+.btn-run:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn-run svg{width:14px;height:14px}
 
-  /* toast */
-  #toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px) scale(.95);background:linear-gradient(135deg,#181818,#111);border:1px solid #333;color:#f0f0f0;padding:12px 22px;border-radius:12px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:400;box-shadow:0 16px 44px rgba(0,0,0,.8)}
-  #toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
-  #toast .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:9px;box-shadow:0 0 8px var(--orange-glow);animation:pulseDot 1.5s ease-in-out infinite}
-  @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.5}}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:#666}
+.empty-mark{width:70px;height:70px;margin:0 auto 20px;border-radius:20px;background:#000;border:2px solid var(--orange);display:grid;place-items:center;box-shadow:0 0 40px rgba(255,107,0,.25);animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.empty-mark svg{width:32px;height:32px;color:var(--orange)}
+.empty-state h2{font-size:22px;color:#fff;letter-spacing:.18em;margin-bottom:10px;font-weight:800}
+.empty-state p{font-size:13px;color:#7a7a7a;max-width:420px;margin:0 auto 24px;line-height:1.65}
+.empty-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px;margin:0 auto}
+.empty-chip{padding:9px 14px;border-radius:9px;background:var(--surface2);border:1px solid var(--border);color:#bfbfbf;font-size:12px;transition:all .2s}
+.empty-chip:hover{background:var(--surface3);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
 
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none}
-  .scrim.open{display:block}
-  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);animation:rippleAnim .65s ease-out;pointer-events:none;z-index:5}
-  @keyframes rippleAnim{to{transform:scale(2.6);opacity:0}}
+/* COMPOSER */
+.composer-wrap{padding:12px 20px 18px;background:linear-gradient(to top,#000 60%,transparent);flex-shrink:0;position:relative;z-index:2}
+.composer{max-width:860px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:9px 10px;display:flex;align-items:flex-end;gap:6px;transition:all .25s var(--ease)}
+.composer:focus-within{border-color:#3e3e3e;box-shadow:0 0 0 3px rgba(255,107,0,.08)}
+.comp-btn{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:0 0 36px;color:#fff}
+.comp-btn svg{width:18px;height:18px;opacity:.65}
+.comp-btn:hover{background:#1f1f1f}
+#input{flex:1;background:none;border:none;outline:none;color:var(--text);resize:none;font-size:14.5px;line-height:1.5;max-height:180px;min-height:24px;padding:7px 4px}
+#input::placeholder{color:#6a6a6a}
+.btn-send{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;display:grid;place-items:center;flex:0 0 38px;transition:all .2s;box-shadow:0 2px 10px rgba(255,107,0,.25)}
+.btn-send svg{width:18px;height:18px}
+.btn-send:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.composer-hint{max-width:860px;margin:9px auto 0;text-align:center;font-size:10.5px;color:#4f4f4f}
+.composer-hint kbd{background:#161616;border:1px solid #262626;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:10px;color:#8a8a8a}
 
-  @media (max-width:880px){
-    .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .3s var(--ease);width:290px;flex-basis:290px}
-    .sidebar.open{transform:translateX(0)}
-    .btn-menu{display:grid}
-    .msg-wrap{padding:0 14px}
-    .composer-wrap{padding:10px 12px 14px}
-    .bubble{max-width:calc(100% - 48px);font-size:14px}
-    .tool-panel{padding:12px}
-  }
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px) scale(.95);background:linear-gradient(135deg,#181818,#111);border:1px solid #333;color:#f0f0f0;padding:12px 22px;border-radius:12px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:400;box-shadow:0 16px 44px rgba(0,0,0,.8);max-width:calc(100vw - 40px);text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+#toast .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:9px;box-shadow:0 0 8px var(--orange-glow);animation:pulseDot 1.5s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* MODAL SETTINGS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.overlay.open{display:flex;animation:fadeIn .2s var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{width:min(520px,100%);background:var(--surface);border:1px solid #2b2b2b;border-radius:16px;padding:22px;box-shadow:0 30px 100px rgba(0,0,0,.9);max-height:90vh;overflow-y:auto}
+.modal h2{font-size:14px;font-weight:800;letter-spacing:.1em;color:#fff;margin-bottom:6px;text-transform:uppercase}
+.modal p{font-size:11.5px;color:#7a7a7a;margin-bottom:16px;line-height:1.6}
+.modal .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.modal .field label{font-size:10.5px;color:#8a8a8a;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.modal .field label a{color:var(--orange);text-decoration:none;font-size:10px;text-transform:none;letter-spacing:0}
+.modal .field input{background:#0a0a0a;border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:12.5px;outline:none;transition:border-color .15s}
+.modal .field input:focus{border-color:var(--orange)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.btn-ghost{padding:10px 16px;border-radius:8px;font-weight:600;font-size:12px;color:#b3b3b3;border:1px solid var(--border);transition:all .15s}
+.btn-ghost:hover{background:var(--surface2);color:#fff}
+
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);animation:rippleAnim .65s ease-out;pointer-events:none;z-index:5}
+@keyframes rippleAnim{to{transform:scale(2.6);opacity:0}}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none}
+.scrim.open{display:block}
+
+@media(max-width:880px){
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .3s var(--ease);width:290px;flex-basis:290px}
+  .sidebar.open{transform:translateX(0)}
+  .btn-menu{display:grid}
+  .msg-wrap{padding:0 14px}
+  .composer-wrap{padding:10px 12px 14px}
+  .bubble{max-width:calc(100% - 48px);font-size:14px}
+}
 </style>
 </head>
 <body>
 
-<div class="bg-orbs" aria-hidden="true">
-  <div class="bg-orb a"></div>
-  <div class="bg-orb b"></div>
-</div>
+<div class="bg-orbs"><div class="bg-orb a"></div><div class="bg-orb b"></div></div>
 
 <div class="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
       <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 6h16M12 6v13"/></svg></div>
-      <div class="brand-text">
+      <div>
         <span class="brand-name">TRUX AI</span>
         <span class="brand-sub">Anônimo · Multiferramentas</span>
       </div>
     </div>
 
-    <div class="section-label">Ferramentas de IA</div>
-    <div class="tool-list">
-      <button class="tool-btn active" data-tool="chat">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
-        Chat / Texto
-        <span class="badge">GROQ</span>
-      </button>
-      <button class="tool-btn" data-tool="image">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        Gerar Imagem
-        <span class="badge">Pollinations</span>
-      </button>
-      <button class="tool-btn" data-tool="tts">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-        Texto para Fala
-        <span class="badge">Edge TTS</span>
-      </button>
-      <button class="tool-btn" data-tool="stt">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
-        Transcrever Áudio
-        <span class="badge warn">Puter</span>
-      </button>
-      <button class="tool-btn" data-tool="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        Buscar na Web
-        <span class="badge">Tavily</span>
-      </button>
-      <button class="tool-btn" data-tool="music">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        Gerar Música
-        <span class="badge warn">ACE</span>
-      </button>
-      <button class="tool-btn" data-tool="video">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg>
-        Gerar Vídeo
-        <span class="badge warn">Agnes</span>
-      </button>
-      <button class="tool-btn" data-tool="code">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
-        Modo Code
-        <span class="badge">GROQ</span>
-      </button>
-    </div>
+    <div class="section-label">Ferramentas</div>
+    <div class="tool-list" id="toolList"></div>
 
     <div class="sidebar-foot">
+      <button class="foot-btn" id="btnSettings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configurar chaves
+      </button>
       <button class="foot-btn" id="btnExportAll">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
-        Baixar todas as conversas
+        Baixar conversas
       </button>
       <button class="foot-btn danger" id="btnWipe">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M6 17l-3-3 9-9 5 5-9 9H6z"/></svg>
@@ -237,14 +225,13 @@
 
   <div class="scrim" id="scrim"></div>
 
-  <!-- MAIN -->
   <main class="main">
     <header class="topbar">
-      <button class="btn-menu" id="btnMenu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <button class="btn-menu" id="btnMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <div class="topbar-title" id="topTitle">TRUX AI · Chat</div>
       <div class="topbar-actions">
-        <button class="icon-btn" id="btnBranch" title="Branch a partir de resumo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg></button>
-        <button class="icon-btn" id="btnDownloadChat" title="Baixar chat .TXT"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg></button>
+        <button class="icon-btn" id="btnNewChat" title="Novo chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button class="icon-btn" id="btnDownloadChat" title="Baixar chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg></button>
         <button class="icon-btn danger" id="btnDeleteChat" title="Apagar chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
       </div>
     </header>
@@ -253,463 +240,881 @@
 
     <div class="composer-wrap">
       <div class="composer">
-        <button class="comp-btn" id="btnImgMode" title="Modo imagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></button>
-        <textarea id="input" rows="1" placeholder="Pergunte alguma coisa para a TRUX AI..."></textarea>
+        <textarea id="input" rows="1" placeholder="Pergunte alguma coisa..."></textarea>
         <button class="btn-send" id="btnSend" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
       </div>
-      <div class="composer-hint"><kbd>Enter</kbd> envia · Ferramentas ilimitadas e com limite por sessão</div>
+      <div class="composer-hint"><kbd>Enter</kbd> envia · Ferramentas com limites por sessão</div>
     </div>
   </main>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="settingsOverlay">
+  <div class="modal">
+    <h2>Configurar Chaves de API</h2>
+    <p>As chaves ficam apenas na sua sessão e são apagadas quando você sai. Ferramentas que precisam de chave: Música (ACE) e Vídeo (Agnes).</p>
+    <div class="field">
+      <label>ACE Music <a href="https://acemusic.ai/playground/api-key" target="_blank">obter grátis ↗</a></label>
+      <input type="password" id="keyAce" placeholder="sk-...">
+    </div>
+    <div class="field">
+      <label>Agnes AI <a href="https://platform.agnes-ai.com" target="_blank">obter grátis ↗</a></label>
+      <input type="password" id="keyAgnes" placeholder="sk-...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="btnCloseSettings">Fechar</button>
+      <button class="btn-run" id="btnSaveSettings">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- STT MODAL -->
+<div class="overlay" id="sttOverlay">
+  <div class="modal">
+    <h2>Transcrever Áudio</h2>
+    <p>Envie um arquivo de áudio. A transcrição usa a API gratuita da Puter.js.</p>
+    <div class="field">
+      <label>Arquivo de áudio</label>
+      <input type="file" id="sttFile" accept="audio/*">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="btnCloseStt">Cancelar</button>
+      <button class="btn-run" id="btnRunStt">Transcrever</button>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-/* =========================================================
-   CONFIGURAÇÃO E ESTADO
-   ========================================================= */
-const GROQ_KEY = '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';
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODELS = { fast:'openai/gpt-oss-20b', think:'openai/gpt-oss-120b', code:'openai/gpt-oss-120b' };
-const SYSTEM = {
+/* ==========================================================
+   TRUX AI - versão limpa e funcional
+   ========================================================== */
+
+var GROQ_KEY = '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';
+var GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+var MODELS = { fast:'openai/gpt-oss-20b', think:'openai/gpt-oss-120b', code:'openai/gpt-oss-120b' };
+var SYSTEM = {
   fast: 'Você é TRUX AI, assistente rápido e objetivo. Responda em português do Brasil, claro e direto.',
   think: 'Você é TRUX AI, assistente analítico. Pense em etapas, mostre raciocínio, responda em português do Brasil.',
   code: 'Você é TRUX AI no modo CODE, engenheiro sênior. Entregue código completo e funcional em blocos, explique brevemente. Responda em português.'
 };
 
-// Limites por sessão (sessionStorage) para APIs quase ilimitadas
-const LIMITS = {
-  veida: { max: 7, label: 'Veida (imagens/dia)' },
-  agnes: { max: 3, label: 'Agnes (vídeos/sessão)' },
-  ace: { max: 5, label: 'ACE Music (músicas/sessão)' },
-  puter_stt: { max: 10, label: 'Puter STT (transcrições/sessão)' }
+// Ferramentas disponíveis
+var TOOLS = [
+  { id:'chat',   label:'Chat / Texto',    badge:'GROQ',        cls:'',     icon:'chat' },
+  { id:'image',  label:'Gerar Imagem',    badge:'Pollinations',cls:'',     icon:'image' },
+  { id:'tts',    label:'Texto para Fala', badge:'Edge TTS',    cls:'',     icon:'speaker' },
+  { id:'stt',    label:'Transcrever',     badge:'Puter',       cls:'warn', icon:'mic' },
+  { id:'search', label:'Buscar na Web',   badge:'Tavily',      cls:'',     icon:'search' },
+  { id:'music',  label:'Gerar Música',    badge:'ACE',         cls:'key',  icon:'music' },
+  { id:'video',  label:'Gerar Vídeo',     badge:'Agnes',       cls:'key',  icon:'video' },
+  { id:'code',   label:'Modo Code',       badge:'GROQ',        cls:'',     icon:'code' }
+];
+
+var LIMITS = {
+  veida: { max:7 },
+  ace:   { max:5 },
+  agnes: { max:3 },
+  puter_stt: { max:10 }
 };
 
-function getUsage(key) {
-  const raw = sessionStorage.getItem('trux_usage_' + key);
-  return raw ? JSON.parse(raw) : { count: 0, date: new Date().toDateString() };
+var ICONS = {
+  chat:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>',
+  image:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+  mic:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>',
+  search:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>',
+  music:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  video:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg>',
+  code:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>'
+};
+
+// Estado em memória
+var state = { chats: [], activeId: null, mode: 'fast' };
+var busy = false;
+var currentTool = 'chat';
+var lastCodeOutput = '';
+
+// Util
+function $(id){ return document.getElementById(id); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+var toastTimer;
+function toast(msg){
+  var t = $('toast');
+  t.innerHTML = '<span class="dot"></span>' + esc(msg);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
 }
-function setUsage(key, data) { sessionStorage.setItem('trux_usage_' + key, JSON.stringify(data)); }
-function canUse(key) {
-  const u = getUsage(key);
-  const limit = LIMITS[key];
-  if (!limit) return true;
-  if (u.date !== new Date().toDateString()) { setUsage(key, { count: 0, date: new Date().toDateString() }); return true; }
-  return u.count < limit.max;
+
+// Limites por sessão
+function getUsage(key){
+  try {
+    var raw = sessionStorage.getItem('trux_usage_' + key);
+    return raw ? JSON.parse(raw) : { count: 0, date: new Date().toDateString() };
+  } catch(e){ return { count: 0, date: new Date().toDateString() }; }
 }
-function recordUsage(key) {
-  const u = getUsage(key);
+function setUsage(key, data){
+  try { sessionStorage.setItem('trux_usage_' + key, JSON.stringify(data)); } catch(e){}
+}
+function canUse(key){
+  if (!LIMITS[key]) return true;
+  var u = getUsage(key);
+  if (u.date !== new Date().toDateString()){ setUsage(key, { count: 0, date: new Date().toDateString() }); return true; }
+  return u.count < LIMITS[key].max;
+}
+function recordUsage(key){
+  if (!LIMITS[key]) return;
+  var u = getUsage(key);
   if (u.date !== new Date().toDateString()) u.count = 0;
   u.count++;
   u.date = new Date().toDateString();
   setUsage(key, u);
 }
 
-// Estado dos chats
-let state = { chats: [], activeId: null, mode: 'fast' };
-let busy = false;
-let currentTool = 'chat';
-let imageMode = false;
+// Chaves de API (sessionStorage)
+function getKey(name){ try { return sessionStorage.getItem('trux_key_' + name) || ''; } catch(e){ return ''; } }
+function setKey(name, val){ try { sessionStorage.setItem('trux_key_' + name, val); } catch(e){} }
 
-const $ = id => document.getElementById(id);
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-let toastTimer;
-function toast(msg) {
-  const t = $('toast');
-  t.innerHTML = '<span class="dot"></span>' + escapeHtml(msg);
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-/* =========================================================
-   CHAT / TEXTO (GROQ)
-   ========================================================= */
-async function groqStream(messages, model, onChunk) {
-  const res = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
-    body: JSON.stringify({ model, messages, stream: true, temperature: 0.7, max_tokens: 4096 })
-  });
-  if (!res.ok) { const txt = await res.text(); throw new Error(txt.slice(0, 200)); }
-  const reader = res.body.getReader(); const dec = new TextDecoder(); let full = ''; let buf = '';
-  while (true) {
-    const { done, value } = await reader.read(); if (done) break;
-    buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop();
-    for (const line of lines) {
-      const t = line.trim(); if (!t.startsWith('data:')) continue;
-      const payload = t.slice(5).trim(); if (!payload || payload === '[DONE]') continue;
-      try { const j = JSON.parse(payload); const d = j.choices?.[0]?.delta; if (d?.content) { full += d.content; onChunk(d.content); } } catch(e) {}
-    }
-  }
-  return full;
-}
-
-async function groqOnce(messages, model, maxTokens) {
-  const res = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
-    body: JSON.stringify({ model, messages, temperature: 0.4, max_tokens: maxTokens || 900 })
-  });
-  if (!res.ok) throw new Error('API ' + res.status);
-  const j = await res.json(); return j.choices[0].message.content;
-}
-
-function renderMD(text) {
+// ============================================================
+// MARKDOWN SIMPLES
+// ============================================================
+function renderMD(text){
   if (!text) return '';
-  let html = ''; const parts = String(text).split(/```/);
-  for (let i = 0; i < parts.length; i++) {
-    if (i % 2 === 1) {
-      let code = parts[i]; let lang = ''; const nl = code.indexOf('\n');
-      if (nl > -1) { const first = code.slice(0, nl).trim(); if (/^[\w+#.-]{0,20}$/.test(first)) { lang = first; code = code.slice(nl + 1); } }
-      html += '<pre><code>' + escapeHtml(code.replace(/\n$/, '')) + '</code></pre>';
+  var html = '';
+  var parts = String(text).split(/```/);
+  for (var i = 0; i < parts.length; i++){
+    if (i % 2 === 1){
+      var code = parts[i];
+      var lang = '';
+      var nl = code.indexOf('\n');
+      if (nl > -1){
+        var first = code.slice(0, nl).trim();
+        if (/^[\w+#.-]{0,20}$/.test(first)){ lang = first; code = code.slice(nl + 1); }
+      }
+      html += '<pre><code>' + esc(code.replace(/\n$/, '')) + '</code></pre>';
     } else {
-      let t = escapeHtml(parts[i]);
-      t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      var t = esc(parts[i]);
+      t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+      t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       t = t.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
       t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-      t = t.split(/\n{2,}/).map(p => p.trim() ? '<p>' + p.replace(/\n/g, '<br>') + '</p>' : '').join('');
+      t = t.replace(/^####\s+(.*)$/gm, '<h4 style="margin:14px 0 8px;font-size:14px">$1</h4>');
+      t = t.replace(/^###\s+(.*)$/gm, '<h4 style="margin:14px 0 8px;font-size:14px">$1</h4>');
+      t = t.replace(/^##\s+(.*)$/gm, '<h3 style="margin:16px 0 8px;font-size:15px">$1</h3>');
+      t = t.replace(/^#\s+(.*)$/gm, '<h3 style="margin:16px 0 8px;font-size:15px">$1</h3>');
+      t = t.replace(/(?:^|\n)((?:[ \t]*[-*]\s+.*(?:\n|$))+)/g, function(m, block){
+        var items = block.trim().split('\n').map(function(l){ return '<li>' + l.replace(/^[ \t]*[-*]\s+/, '') + '</li>'; }).join('');
+        return '\n<ul>' + items + '</ul>\n';
+      });
+      t = t.split(/\n{2,}/).map(function(p){
+        var trimmed = p.trim();
+        if (!trimmed) return '';
+        if (/^<(h3|h4|ul|pre|blockquote)/.test(trimmed)) return trimmed;
+        return '<p>' + trimmed.replace(/\n/g, '<br>') + '</p>';
+      }).join('');
       html += t;
     }
   }
   return html;
 }
 
-/* =========================================================
-   FUNÇÕES DE FERRAMENTA
-   ========================================================= */
-
-// 1. IMAGEM (Pollinations - ilimitado com rate limit)
-async function toolImage(prompt) {
-  const seed = Math.floor(Math.random() * 1e6);
-  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&nologo=true&model=flux&seed=${seed}`;
-  return { type: 'image', url, prompt };
-}
-
-// 1b. IMAGEM (Veida - quase ilimitado, 7/dia por IP)
-async function toolImageVeida(prompt) {
-  if (!canUse('veida')) throw new Error('Limite diário de imagens Veida atingido (7/dia).');
-  const res = await fetch('https://api.veida.ai/v1/generate', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt, aspectRatio: '1:1' })
+// ============================================================
+// GROQ API (texto/código)
+// ============================================================
+async function groqStream(messages, model, onChunk){
+  var res = await fetch(GROQ_URL, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + GROQ_KEY },
+    body: JSON.stringify({ model: model, messages: messages, stream: true, temperature: 0.7, max_tokens: 4096 })
   });
-  if (!res.ok) throw new Error('Veida API ' + res.status);
-  const j = await res.json();
-  recordUsage('veida');
-  return { type: 'image', url: j.url, prompt, source: 'Veida' };
+  if (!res.ok){
+    var msg = 'API ' + res.status;
+    try {
+      var txt = await res.text();
+      try { var j = JSON.parse(txt); if (j.error && j.error.message) msg = j.error.message; } catch(e){ msg = txt.slice(0,200); }
+    } catch(e){}
+    throw new Error(msg);
+  }
+  var reader = res.body.getReader();
+  var dec = new TextDecoder();
+  var full = '';
+  var buf = '';
+  while (true){
+    var r = await reader.read();
+    if (r.done) break;
+    buf += dec.decode(r.value, { stream: true });
+    var lines = buf.split('\n');
+    buf = lines.pop();
+    for (var i = 0; i < lines.length; i++){
+      var line = lines[i].trim();
+      if (line.indexOf('data:') !== 0) continue;
+      var payload = line.slice(5).trim();
+      if (!payload || payload === '[DONE]') continue;
+      try {
+        var json = JSON.parse(payload);
+        var delta = json.choices && json.choices[0] && json.choices[0].delta;
+        if (delta && delta.content){ full += delta.content; onChunk(delta.content); }
+      } catch(e){}
+    }
+  }
+  return full;
 }
 
-// 2. TTS (Edge TTS - ilimitado, requer browser/WebSocket)
-// Nota: Em produção, use o pacote @edge-tts/universal no frontend.
-// Aqui usamos uma chamada simplificada via SpeechSynthesis nativa como fallback,
-// que é ilimitada e não requer chave.
-function toolTTS(text) {
-  return new Promise((resolve) => {
-    if (!window.speechSynthesis) throw new Error('SpeechSynthesis não suportado neste navegador.');
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'pt-BR';
-    utter.rate = 1;
-    window.speechSynthesis.speak(utter);
-    utter.onend = () => resolve({ type: 'audio', text, info: 'Reproduzido via SpeechSynthesis nativa (ilimitado).' });
-    utter.onerror = (e) => { throw new Error('Erro na síntese: ' + e.error); };
-    // Resolve imediatamente para não bloquear a UI
-    setTimeout(() => resolve({ type: 'audio', text, info: 'Áudio sendo reproduzido...' }), 500);
-  });
+// ============================================================
+// FERRAMENTAS
+// ============================================================
+
+// Imagem (Pollinations - sem chave)
+function toolImage(prompt){
+  var seed = Math.floor(Math.random() * 1e6);
+  var url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=1024&height=1024&nologo=true&model=flux&seed=' + seed;
+  return { type:'image', url: url, prompt: prompt, source: 'Pollinations' };
 }
 
-// 3. STT (Puter.js - ilimitado via user-pays, requer script)
-async function toolSTT(file) {
-  if (!window.puter) throw new Error('Puter.js não carregado. Adicione <script src="https://js.puter.com/v2/"></script> ao HTML.');
-  if (!canUse('puter_stt')) throw new Error('Limite de transcrições Puter atingido nesta sessão (10).');
-  const text = await puter.ai.speech2txt(file);
-  recordUsage('puter_stt');
-  return { type: 'text', content: '**Transcrição:**\n\n' + text };
-}
-
-// 4. BUSCA (Tavily - keyless, ilimitado com rate limit)
-async function toolSearch(query) {
-  const res = await fetch('https://api.tavily.com/search', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Tavily-Access-Mode': 'keyless' },
-    body: JSON.stringify({ query, max_results: 5 })
-  });
-  if (!res.ok) throw new Error('Tavily API ' + res.status);
-  const j = await res.json();
-  const results = j.results.map(r => `- [${r.title}](${r.url}): ${r.content?.slice(0, 200)}...`).join('\n');
-  return { type: 'text', content: `**Resultados da busca por "${query}":**\n\n${results}` };
-}
-
-// 5. MÚSICA (ACE Music - gratuito com chave)
-async function toolMusic(prompt, apiKey) {
-  if (!apiKey) throw new Error('Chave da ACE Music não configurada. Cole sua chave no campo abaixo.');
-  if (!canUse('ace')) throw new Error('Limite de músicas ACE atingido nesta sessão (5).');
-  const res = await fetch('https://api.acemusic.ai/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-    body: JSON.stringify({ model: 'ace-step-1.5', messages: [{ role: 'user', content: prompt }] })
-  });
-  if (!res.ok) throw new Error('ACE Music API ' + res.status);
-  const j = await res.json();
-  recordUsage('ace');
-  // A resposta pode conter um link de áudio ou letra; extrai a URL se houver
-  const content = j.choices?.[0]?.message?.content || JSON.stringify(j);
-  return { type: 'text', content: '**Música gerada (ACE Music):**\n\n' + content };
-}
-
-// 6. VÍDEO (Agnes Video - gratuito ilimitado com chave)
-async function toolVideo(prompt, apiKey) {
-  if (!apiKey) throw new Error('Chave da Agnes AI não configurada. Cole sua chave no campo abaixo.');
-  if (!canUse('agnes')) throw new Error('Limite de vídeos Agnes atingido nesta sessão (3).');
-  // Cria tarefa
-  const createRes = await fetch('https://apihub.agnes-ai.com/v1/videos', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-    body: JSON.stringify({ model: 'agnes-video-v2.0', prompt, duration: 5 })
-  });
-  if (!createRes.ok) throw new Error('Agnes API ' + createRes.status);
-  const { task_id } = await createRes.json();
-  // Polling
-  let videoUrl = null;
-  for (let i = 0; i < 30; i++) {
-    await new Promise(r => setTimeout(r, 4000));
-    const pollRes = await fetch(`https://apihub.agnes-ai.com/v1/videos/${task_id}`, {
-      headers: { 'Authorization': 'Bearer ' + apiKey }
+// Veida (imagem, 7/dia por IP, sem chave)
+async function toolImageVeida(prompt){
+  if (!canUse('veida')) throw new Error('Limite diário Veida atingido (7/dia).');
+  try {
+    var res = await fetch('https://api.veida.ai/v1/generate', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ prompt: prompt, aspectRatio: '1:1' })
     });
-    const pollJ = await pollRes.json();
-    if (pollJ.status === 'completed' && pollJ.video_url) { videoUrl = pollJ.video_url; break; }
+    if (!res.ok) throw new Error('Veida ' + res.status);
+    var j = await res.json();
+    recordUsage('veida');
+    return { type:'image', url: j.url, prompt: prompt, source: 'Veida' };
+  } catch(e){
+    throw new Error('Veida falhou: ' + e.message);
+  }
+}
+
+// TTS (SpeechSynthesis - ilimitado)
+function toolTTS(text){
+  if (!window.speechSynthesis) throw new Error('SpeechSynthesis não suportado.');
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'pt-BR';
+  u.rate = 1;
+  window.speechSynthesis.speak(u);
+  return { type:'audio', info:'Áudio reproduzido via voz nativa do navegador.', content: text };
+}
+
+// STT (Puter.js - 10/sessão)
+async function toolSTT(file){
+  if (!window.puter || !window.puter.ai || !window.puter.ai.speech2txt){
+    throw new Error('Puter.js ainda carregando. Aguarde e tente novamente.');
+  }
+  if (!canUse('puter_stt')) throw new Error('Limite de transcrições atingido (10/sessão).');
+  var text = await window.puter.ai.speech2txt(file);
+  recordUsage('puter_stt');
+  return { type:'text', content: '**Transcrição:**\n\n' + text };
+}
+
+// Busca (Tavily - keyless)
+async function toolSearch(query){
+  try {
+    var res = await fetch('https://api.tavily.com/search', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'X-Tavily-Access-Mode':'keyless' },
+      body: JSON.stringify({ query: query, max_results: 5 })
+    });
+    if (!res.ok) throw new Error('Tavily ' + res.status);
+    var j = await res.json();
+    if (!j.results || !j.results.length) return { type:'text', content:'Nenhum resultado encontrado para "' + query + '".' };
+    var out = '**Resultados para "' + query + '":**\n\n';
+    j.results.forEach(function(r){
+      out += '- **[' + (r.title || 'sem título') + '](' + r.url + ')**\n  ' + (r.content || '').slice(0, 200) + '...\n\n';
+    });
+    return { type:'text', content: out };
+  } catch(e){
+    throw new Error('Busca falhou: ' + e.message);
+  }
+}
+
+// Música (ACE - 5/sessão, com chave)
+async function toolMusic(prompt){
+  var key = getKey('ace');
+  if (!key) throw new Error('Configure a chave da ACE em Configurar chaves.');
+  if (!canUse('ace')) throw new Error('Limite de músicas atingido (5/sessão).');
+  var res = await fetch('https://api.acemusic.ai/v1/chat/completions', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + key },
+    body: JSON.stringify({ model:'ace-step-1.5', messages:[{ role:'user', content: prompt }] })
+  });
+  if (!res.ok) throw new Error('ACE ' + res.status);
+  var j = await res.json();
+  recordUsage('ace');
+  var content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || JSON.stringify(j);
+  return { type:'text', content:'**Música (ACE):**\n\n' + content };
+}
+
+// Vídeo (Agnes - 3/sessão, com chave)
+async function toolVideo(prompt){
+  var key = getKey('agnes');
+  if (!key) throw new Error('Configure a chave da Agnes em Configurar chaves.');
+  if (!canUse('agnes')) throw new Error('Limite de vídeos atingido (3/sessão).');
+  var createRes = await fetch('https://apihub.agnes-ai.com/v1/videos', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + key },
+    body: JSON.stringify({ model:'agnes-video-v2.0', prompt: prompt, duration: 5 })
+  });
+  if (!createRes.ok) throw new Error('Agnes ' + createRes.status);
+  var createJ = await createRes.json();
+  var taskId = createJ.task_id || createJ.id;
+  if (!taskId) throw new Error('Agnes não retornou task_id');
+  var videoUrl = null;
+  for (var i = 0; i < 30; i++){
+    await new Promise(function(r){ setTimeout(r, 4000); });
+    var pollRes = await fetch('https://apihub.agnes-ai.com/v1/videos/' + taskId, {
+      headers: { 'Authorization':'Bearer ' + key }
+    });
+    var pollJ = await pollRes.json();
+    if (pollJ.status === 'completed' && pollJ.video_url){ videoUrl = pollJ.video_url; break; }
     if (pollJ.status === 'failed') throw new Error('Geração de vídeo falhou.');
   }
-  if (!videoUrl) throw new Error('Tempo esgotado para gerar o vídeo.');
+  if (!videoUrl) throw new Error('Tempo esgotado.');
   recordUsage('agnes');
-  return { type: 'video', url: videoUrl, prompt };
+  return { type:'video', url: videoUrl, prompt: prompt };
 }
 
-/* =========================================================
-   UI DO CHAT
-   ========================================================= */
-function activeChat() { return state.chats.find(c => c.id === state.activeId) || null; }
-function createChat(silent) {
-  const c = { id: uid(), title: 'Novo chat', mode: state.mode || 'fast', messages: [], createdAt: Date.now() };
-  state.chats.unshift(c); state.activeId = c.id; if (!silent) renderAll(); return c;
+// ============================================================
+// RENDER UI
+// ============================================================
+function activeChat(){
+  for (var i = 0; i < state.chats.length; i++){
+    if (state.chats[i].id === state.activeId) return state.chats[i];
+  }
+  return null;
 }
 
-function renderAll() { renderMessages(); renderTopTitle(); }
+function createChat(silent){
+  var c = { id: uid(), title:'Novo chat', mode:'fast', messages:[], createdAt: Date.now() };
+  state.chats.unshift(c);
+  state.activeId = c.id;
+  if (!silent) renderAll();
+  return c;
+}
 
-function renderTopTitle() {
-  const names = { chat:'Chat', image:'Imagem', tts:'Texto para Fala', stt:'Transcrever Áudio', search:'Buscar na Web', music:'Gerar Música', video:'Gerar Vídeo', code:'Code' };
+function renderAll(){
+  renderMessages();
+  renderTopTitle();
+}
+
+function renderTopTitle(){
+  var names = { chat:'Chat', image:'Imagem', tts:'Texto para Fala', stt:'Transcrever', search:'Buscar', music:'Música', video:'Vídeo', code:'Code' };
   $('topTitle').textContent = 'TRUX AI · ' + (names[currentTool] || 'Chat');
 }
 
-function renderMessages() {
-  const el = $('messages'); const chat = activeChat(); el.innerHTML = '';
-  if (!chat || !chat.messages.length) {
-    el.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#666">
-      <div style="font-size:40px;margin-bottom:16px;opacity:.5">✦</div>
-      <h2 style="font-size:18px;color:#888;margin-bottom:8px">TRUX AI</h2>
-      <p style="font-size:13px;max-width:400px;margin:0 auto;line-height:1.6">Use a barra lateral para escolher uma ferramenta. Todas as funções são gratuitas ou quase ilimitadas, com limites por sessão para evitar abusos.</p>
-    </div>`;
+function renderMessages(){
+  var el = $('messages');
+  var chat = activeChat();
+  el.innerHTML = '';
+
+  if (!chat || !chat.messages.length){
+    renderEmptyState(el);
     return;
   }
-  const wrap = document.createElement('div'); wrap.className = 'msg-wrap';
-  chat.messages.forEach(m => {
-    const d = document.createElement('div'); d.className = 'msg ' + (m.role === 'user' ? 'user' : 'ai');
-    d.innerHTML = `<div class="avatar">${m.role === 'user' ? 'EU' : 'TRUX'}</div>`;
-    const bubble = document.createElement('div'); bubble.className = 'bubble';
-    if (m.type === 'image') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:11px;color:#888;margin-bottom:8px">${escapeHtml(m.prompt)}</p><img src="${m.url}" alt="${escapeHtml(m.prompt)}" style="width:100%;border-radius:10px" loading="lazy"></div>`;
-    else if (m.type === 'video') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:11px;color:#888;margin-bottom:8px">${escapeHtml(m.prompt)}</p><video src="${m.url}" controls style="width:100%;border-radius:10px"></video></div>`;
-    else if (m.type === 'audio') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:12px;color:#8a8a8a">${escapeHtml(m.info || 'Áudio gerado.')}</p></div>`;
-    else bubble.innerHTML = renderMD(m.content || '');
-    d.appendChild(bubble); wrap.appendChild(d);
+
+  var wrap = document.createElement('div');
+  wrap.className = 'msg-wrap';
+
+  chat.messages.forEach(function(m){
+    var d = document.createElement('div');
+    d.className = 'msg ' + (m.role === 'user' ? 'user' : 'ai');
+
+    var av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = m.role === 'user' ? 'EU' : 'TRUX';
+    d.appendChild(av);
+
+    var bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    fillBubble(bubble, m);
+    d.appendChild(bubble);
+
+    wrap.appendChild(d);
   });
-  el.appendChild(wrap); el.scrollTop = el.scrollHeight;
+
+  el.appendChild(wrap);
+  el.scrollTop = el.scrollHeight;
 }
 
-/* =========================================================
-   ENVIO PRINCIPAL
-   ========================================================= */
-async function sendMessage() {
-  const chat = activeChat(); if (!chat || busy) return;
-  const ta = $('input'); const text = ta.value.trim(); if (!text) return;
-  ta.value = ''; ta.style.height = 'auto'; updateSendBtn();
+function fillBubble(bubble, m){
+  if (m.type === 'image'){
+    var panel = document.createElement('div');
+    panel.className = 'tool-panel';
+    var label = document.createElement('p');
+    label.className = 'panel-label';
+    label.textContent = m.prompt;
+    panel.appendChild(label);
+    var img = document.createElement('img');
+    img.src = m.url;
+    img.alt = m.prompt;
+    img.loading = 'lazy';
+    panel.appendChild(img);
+    if (m.source){
+      var src = document.createElement('p');
+      src.style.cssText = 'font-size:10px;color:#666;margin-top:8px;text-transform:uppercase;letter-spacing:.1em';
+      src.textContent = 'Fonte: ' + m.source;
+      panel.appendChild(src);
+    }
+    bubble.appendChild(panel);
+    return;
+  }
+  if (m.type === 'video'){
+    var panel2 = document.createElement('div');
+    panel2.className = 'tool-panel';
+    var lbl = document.createElement('p');
+    lbl.className = 'panel-label';
+    lbl.textContent = m.prompt;
+    panel2.appendChild(lbl);
+    var vid = document.createElement('video');
+    vid.src = m.url;
+    vid.controls = true;
+    panel2.appendChild(vid);
+    bubble.appendChild(panel2);
+    return;
+  }
+  if (m.type === 'audio'){
+    var panel3 = document.createElement('div');
+    panel3.className = 'tool-panel';
+    var info = document.createElement('p');
+    info.className = 'panel-label';
+    info.textContent = m.info || 'Áudio reproduzido.';
+    panel3.appendChild(info);
+    var replay = document.createElement('button');
+    replay.className = 'btn-run';
+    replay.style.marginTop = '8px';
+    replay.textContent = 'Reproduzir novamente';
+    replay.addEventListener('click', function(){
+      if (window.speechSynthesis){
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(m.content || '');
+        u.lang = 'pt-BR';
+        window.speechSynthesis.speak(u);
+      }
+    });
+    panel3.appendChild(replay);
+    bubble.appendChild(panel3);
+    return;
+  }
+  if (m.type === 'error'){
+    bubble.innerHTML = '<span class="err">' + esc(m.content || '') + '</span>';
+    return;
+  }
+  bubble.innerHTML = renderMD(m.content || '');
+}
 
-  // Adiciona mensagem do usuário
-  chat.messages.push({ role: 'user', content: text });
+function renderEmptyState(el){
+  var div = document.createElement('div');
+  div.className = 'empty-state';
+
+  var mark = document.createElement('div');
+  mark.className = 'empty-mark';
+  mark.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M12 6v13"/></svg>';
+  div.appendChild(mark);
+
+  var h2 = document.createElement('h2');
+  h2.textContent = 'TRUX AI';
+  div.appendChild(h2);
+
+  var p = document.createElement('p');
+  p.textContent = 'Escolha uma ferramenta na barra lateral. Chat e imagem funcionam sem chave. As outras têm limites por sessão para evitar abusos.';
+  div.appendChild(p);
+
+  var chips = document.createElement('div');
+  chips.className = 'empty-chips';
+  var examples = [
+    { p: 'Explique computação quântica de forma simples', t:'chat' },
+    { p: 'Gere uma imagem de uma cidade cyberpunk ao entardecer', t:'image' },
+    { p: 'Qual a previsão do tempo em São Paulo hoje?', t:'search' },
+    { p: 'Escreva uma função JavaScript que valide CPF', t:'code' }
+  ];
+  examples.forEach(function(ex){
+    var c = document.createElement('button');
+    c.className = 'empty-chip';
+    c.textContent = ex.p;
+    c.addEventListener('click', function(){
+      currentTool = ex.t;
+      updateActiveTool();
+      renderTopTitle();
+      $('input').value = ex.p;
+      $('input').dispatchEvent(new Event('input'));
+      $('input').focus();
+    });
+    chips.appendChild(c);
+  });
+  div.appendChild(chips);
+
+  el.appendChild(div);
+}
+
+// ============================================================
+// SIDEBAR / FERRAMENTAS
+// ============================================================
+function buildToolList(){
+  var list = $('toolList');
+  list.innerHTML = '';
+  TOOLS.forEach(function(t){
+    var btn = document.createElement('button');
+    btn.className = 'tool-btn' + (t.id === currentTool ? ' active' : '');
+    btn.dataset.tool = t.id;
+
+    var iconWrap = document.createElement('span');
+    iconWrap.innerHTML = ICONS[t.icon] || ICONS.chat;
+    iconWrap.style.display = 'flex';
+    btn.appendChild(iconWrap.firstChild);
+
+    var name = document.createElement('span');
+    name.className = 'tool-name';
+    name.textContent = t.label;
+    btn.appendChild(name);
+
+    var badge = document.createElement('span');
+    badge.className = 'badge ' + (t.cls || '');
+    badge.textContent = t.badge;
+    btn.appendChild(badge);
+
+    btn.addEventListener('click', function(){
+      currentTool = t.id;
+      updateActiveTool();
+      renderTopTitle();
+      closeSidebar();
+      $('input').focus();
+      if (t.id === 'stt') openSttModal();
+    });
+    list.appendChild(btn);
+  });
+}
+
+function updateActiveTool(){
+  document.querySelectorAll('.tool-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.tool === currentTool);
+  });
+}
+
+// ============================================================
+// ENVIO
+// ============================================================
+async function sendMessage(){
+  var chat = activeChat();
+  if (!chat || busy) return;
+  var ta = $('input');
+  var text = ta.value.trim();
+  if (!text) return;
+
+  ta.value = '';
+  ta.style.height = 'auto';
+  updateSendBtn();
+
+  if (currentTool === 'stt'){
+    openSttModal();
+    return;
+  }
+
+  chat.messages.push({ role:'user', content: text });
   if (!chat.title || chat.title === 'Novo chat') chat.title = text.slice(0, 46);
   renderAll();
 
-  busy = true; updateSendBtn();
+  busy = true;
+  updateSendBtn();
+
+  var placeholder = { role:'assistant', content:'' };
+  if (currentTool === 'chat' || currentTool === 'code'){
+    placeholder.content = '__typing__';
+  }
+  chat.messages.push(placeholder);
+  renderAll();
+
+  // Atualiza o último bubble como "digitando" para chat/code
+  var lastBubble = null;
+  if (currentTool === 'chat' || currentTool === 'code'){
+    var bubbles = document.querySelectorAll('.msg.ai .bubble');
+    lastBubble = bubbles[bubbles.length - 1];
+    if (lastBubble) lastBubble.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
+  }
 
   try {
-    let result;
-    // Roteamento por ferramenta ativa
-    switch (currentTool) {
+    var result;
+    switch (currentTool){
       case 'image':
-        result = await toolImage(text);
+        result = toolImage(text);
         break;
       case 'tts':
-        result = await toolTTS(text);
+        result = toolTTS(text);
         break;
       case 'search':
         result = await toolSearch(text);
         break;
       case 'music':
-        // Solicita chave ACE ao usuário (simplificado: usa campo global)
-        const aceKey = prompt('Cole sua chave da ACE Music (gratuita em acemusic.ai/playground/api-key):');
-        result = await toolMusic(text, aceKey);
+        result = await toolMusic(text);
         break;
       case 'video':
-        const agnesKey = prompt('Cole sua chave da Agnes AI (gratuita em platform.agnes-ai.com):');
-        result = await toolVideo(text, agnesKey);
-        break;
-      case 'stt':
-        // STT requer upload de arquivo; orienta o usuário
-        result = { type: 'text', content: 'Para transcrever áudio, use o botão de upload na barra de ferramentas (em breve). Enquanto isso, você pode usar a função Puter.js diretamente no console.' };
+        result = await toolVideo(text);
         break;
       case 'code':
-        // Usa GROQ no modo code
-        const codeChat = [{ role: 'system', content: SYSTEM.code }, { role: 'user', content: text }];
-        let acc = '';
-        await groqStream(codeChat, MODELS.code, chunk => { acc += chunk; });
-        result = { role: 'assistant', content: acc };
+        result = await runGroqCode(text, lastBubble);
         break;
-      default: // chat normal
-        const apiMsgs = [{ role: 'system', content: SYSTEM[chat.mode] || SYSTEM.fast }];
-        chat.messages.forEach(m => { if (m.type === 'image' || m.type === 'video') return; if (m.content) apiMsgs.push({ role: m.role, content: m.content }); });
-        let response = '';
-        await groqStream(apiMsgs, MODELS[chat.mode] || MODELS.fast, chunk => { response += chunk; });
-        result = { role: 'assistant', content: response };
+      default:
+        result = await runGroqChat(chat, text, lastBubble);
     }
 
-    // Adiciona resultado ao chat
-    if (result.type === 'image' || result.type === 'video' || result.type === 'audio') {
-      chat.messages.push({ role: 'assistant', ...result });
-    } else {
-      chat.messages.push({ role: 'assistant', content: result.content || result });
-    }
+    chat.messages[chat.messages.length - 1] = result;
     renderAll();
-  } catch (err) {
-    chat.messages.push({ role: 'assistant', type: 'error', content: 'Erro: ' + err.message });
+  } catch (err){
+    chat.messages[chat.messages.length - 1] = { role:'assistant', type:'error', content:'Erro: ' + err.message };
     renderAll();
     toast('Erro: ' + err.message);
   } finally {
-    busy = false; updateSendBtn();
+    busy = false;
+    updateSendBtn();
   }
 }
 
-/* =========================================================
-   COMPOSER
-   ========================================================= */
-function updateSendBtn() {
-  const has = $('input').value.trim().length > 0;
-  $('btnSend').disabled = !has || busy;
-  $('btnSend').innerHTML = busy ? '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
-}
-const style = document.createElement('style');
-style.textContent = '.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}';
-document.head.appendChild(style);
-
-/* =========================================================
-   EVENTOS
-   ========================================================= */
-function bindEvents() {
-  // Menu mobile
-  $('btnMenu').addEventListener('click', () => { $('sidebar').classList.add('open'); $('scrim').classList.add('open'); });
-  $('scrim').addEventListener('click', () => { $('sidebar').classList.remove('open'); $('scrim').classList.remove('open'); });
-
-  // Ferramentas
-  document.querySelectorAll('.tool-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentTool = btn.dataset.tool;
-      renderTopTitle();
-      $('sidebar').classList.remove('open'); $('scrim').classList.remove('open');
-      $('input').focus();
-    });
+async function runGroqChat(chat, text, lastBubble){
+  var apiMsgs = [{ role:'system', content: SYSTEM[chat.mode] || SYSTEM.fast }];
+  chat.messages.forEach(function(m){
+    if (m.type === 'image' || m.type === 'video' || m.type === 'audio' || m.type === 'error') return;
+    if (!m.content || m.content === '__typing__') return;
+    apiMsgs.push({ role: m.role, content: m.content });
   });
 
-  // Input
-  const input = $('input');
-  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 180) + 'px'; updateSendBtn(); });
-  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!busy && input.value.trim()) sendMessage(); } });
+  var acc = '';
+  var lastPaint = 0;
+  await groqStream(apiMsgs, MODELS[chat.mode] || MODELS.fast, function(chunk){
+    acc += chunk;
+    var now = performance.now();
+    if (now - lastPaint > 50 && lastBubble){
+      lastPaint = now;
+      lastBubble.innerHTML = renderMD(acc) + '<span class="caret"></span>';
+      var messages = $('messages');
+      messages.scrollTop = messages.scrollHeight;
+    }
+  });
+  if (lastBubble) lastBubble.innerHTML = renderMD(acc);
+
+  return { role:'assistant', content: acc };
+}
+
+async function runGroqCode(text, lastBubble){
+  var apiMsgs = [{ role:'system', content: SYSTEM.code }, { role:'user', content: text }];
+  var acc = '';
+  var lastPaint = 0;
+  await groqStream(apiMsgs, MODELS.code, function(chunk){
+    acc += chunk;
+    var now = performance.now();
+    if (now - lastPaint > 50 && lastBubble){
+      lastPaint = now;
+      lastBubble.innerHTML = renderMD(acc) + '<span class="caret"></span>';
+      var messages = $('messages');
+      messages.scrollTop = messages.scrollHeight;
+    }
+  });
+  if (lastBubble) lastBubble.innerHTML = renderMD(acc);
+  lastCodeOutput = acc;
+  return { role:'assistant', content: acc };
+}
+
+// ============================================================
+// COMPOSER
+// ============================================================
+function updateSendBtn(){
+  var has = $('input').value.trim().length > 0;
+  var btn = $('btnSend');
+  btn.disabled = !has || busy;
+  if (busy){
+    btn.innerHTML = '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg>';
+  } else {
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  }
+}
+
+// ============================================================
+// SIDEBAR MOBILE
+// ============================================================
+function openSidebar(){ $('sidebar').classList.add('open'); $('scrim').classList.add('open'); }
+function closeSidebar(){ $('sidebar').classList.remove('open'); $('scrim').classList.remove('open'); }
+
+// ============================================================
+// MODAIS
+// ============================================================
+function openSettings(){
+  $('keyAce').value = getKey('ace');
+  $('keyAgnes').value = getKey('agnes');
+  $('settingsOverlay').classList.add('open');
+}
+function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
+
+function openSttModal(){
+  $('sttFile').value = '';
+  $('sttOverlay').classList.add('open');
+}
+function closeSttModal(){ $('sttOverlay').classList.remove('open'); }
+
+async function runStt(){
+  var file = $('sttFile').files[0];
+  if (!file){ toast('Selecione um arquivo de áudio.'); return; }
+  closeSttModal();
+
+  var chat = activeChat();
+  if (!chat){ chat = createChat(true); }
+  chat.messages.push({ role:'user', content:'[Áudio enviado: ' + file.name + ']' });
+  var placeholder = { role:'assistant', content:'__typing__' };
+  chat.messages.push(placeholder);
+  renderAll();
+
+  busy = true;
+  updateSendBtn();
+
+  try {
+    var result = await toolSTT(file);
+    chat.messages[chat.messages.length - 1] = result;
+    renderAll();
+    toast('Transcrição concluída');
+  } catch(err){
+    chat.messages[chat.messages.length - 1] = { role:'assistant', type:'error', content:'Erro: ' + err.message };
+    renderAll();
+    toast('Erro: ' + err.message);
+  } finally {
+    busy = false;
+    updateSendBtn();
+  }
+}
+
+// ============================================================
+// EXPORTAÇÃO
+// ============================================================
+function downloadTxt(name, content){
+  var blob = new Blob([content], { type:'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1500);
+}
+
+function chatToText(chat){
+  var t = '=== ' + (chat.title || 'Sem título') + ' ===\n';
+  t += 'Criado em: ' + new Date(chat.createdAt).toLocaleString('pt-BR') + '\n\n';
+  chat.messages.forEach(function(m){
+    if (m.type === 'image'){ t += '[IMAGEM] ' + m.prompt + '\nURL: ' + m.url + '\n\n'; return; }
+    if (m.type === 'video'){ t += '[VÍDEO] ' + m.prompt + '\nURL: ' + m.url + '\n\n'; return; }
+    if (m.type === 'audio'){ t += '[ÁUDIO] ' + (m.content || '') + '\n\n'; return; }
+    if (m.type === 'error'){ t += '[ERRO] ' + (m.content || '') + '\n\n'; return; }
+    t += (m.role === 'user' ? 'EU' : 'TRUX') + ': ' + (m.content || '') + '\n\n';
+  });
+  return t;
+}
+
+// ============================================================
+// EVENTOS
+// ============================================================
+function bindEvents(){
+  $('btnMenu').addEventListener('click', openSidebar);
+  $('scrim').addEventListener('click', closeSidebar);
+  $('btnNewChat').addEventListener('click', function(){ createChat(); toast('Novo chat'); });
+  $('btnSettings').addEventListener('click', openSettings);
+  $('btnCloseSettings').addEventListener('click', closeSettings);
+  $('settingsOverlay').addEventListener('click', function(e){ if (e.target === $('settingsOverlay')) closeSettings(); });
+  $('btnSaveSettings').addEventListener('click', function(){
+    setKey('ace', $('keyAce').value.trim());
+    setKey('agnes', $('keyAgnes').value.trim());
+    toast('Chaves salvas');
+    closeSettings();
+  });
+  $('btnCloseStt').addEventListener('click', closeSttModal);
+  $('sttOverlay').addEventListener('click', function(e){ if (e.target === $('sttOverlay')) closeSttModal(); });
+  $('btnRunStt').addEventListener('click', runStt);
+
+  $('btnDeleteChat').addEventListener('click', function(){
+    var chat = activeChat();
+    if (!chat) return;
+    if (!confirm('Apagar este chat?')) return;
+    state.chats = state.chats.filter(function(c){ return c.id !== chat.id; });
+    if (!state.chats.length) createChat(true);
+    else state.activeId = state.chats[0].id;
+    renderAll();
+    toast('Chat apagado');
+  });
+  $('btnDownloadChat').addEventListener('click', function(){
+    var chat = activeChat();
+    if (!chat || !chat.messages.length){ toast('Chat vazio.'); return; }
+    downloadTxt('trux-chat.txt', chatToText(chat));
+    toast('Chat baixado');
+  });
+  $('btnExportAll').addEventListener('click', function(){
+    if (!state.chats.length){ toast('Nenhuma conversa.'); return; }
+    var txt = '=== TRUX AI — TODAS AS CONVERSAS ===\n\n';
+    state.chats.slice().reverse().forEach(function(c){ txt += chatToText(c) + '\n\n'; });
+    downloadTxt('trux-conversas.txt', txt);
+    toast('Conversas baixadas');
+  });
+  $('btnWipe').addEventListener('click', function(){
+    if (!confirm('Apagar TODOS os dados locais?\n\nIsso remove chats, chaves e histórico. Não pode ser desfeito.')) return;
+    try { sessionStorage.clear(); } catch(e){}
+    try { localStorage.clear(); } catch(e){}
+    state = { chats: [], activeId: null, mode: 'fast' };
+    createChat(true);
+    renderAll();
+    toast('Todos os dados apagados');
+  });
+
+  var input = $('input');
+  input.addEventListener('input', function(){
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+    updateSendBtn();
+  });
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      if (!busy && input.value.trim()) sendMessage();
+    }
+  });
   $('btnSend').addEventListener('click', sendMessage);
 
-  // Botões do topo
-  $('btnDeleteChat').addEventListener('click', () => {
-    const chat = activeChat(); if (!chat) return;
-    if (!confirm('Apagar este chat?')) return;
-    state.chats = state.chats.filter(c => c.id !== chat.id);
-    if (!state.chats.length) createChat(true); else state.activeId = state.chats[0].id;
-    renderAll(); toast('Chat apagado');
-  });
-  $('btnDownloadChat').addEventListener('click', () => {
-    const chat = activeChat(); if (!chat || !chat.messages.length) { toast('Chat vazio.'); return; }
-    let txt = `=== ${chat.title} ===\n\n`;
-    chat.messages.forEach(m => { txt += (m.role === 'user' ? 'EU: ' : 'TRUX: ') + (m.content || JSON.stringify(m)) + '\n\n'; });
-    downloadTxt('trux-chat.txt', txt);
-  });
-  $('btnExportAll').addEventListener('click', () => {
-    if (!state.chats.length) { toast('Nenhuma conversa.'); return; }
-    let txt = '=== TRUX AI — TODAS AS CONVERSAS ===\n\n';
-    state.chats.slice().reverse().forEach((c, i) => {
-      txt += `--- Chat ${i+1}: ${c.title} ---\n`;
-      c.messages.forEach(m => { txt += (m.role === 'user' ? 'EU: ' : 'TRUX: ') + (m.content || JSON.stringify(m)) + '\n'; });
-      txt += '\n';
-    });
-    downloadTxt('trux-todas-conversas.txt', txt);
-  });
-  $('btnWipe').addEventListener('click', () => {
-    if (!confirm('Apagar todos os dados locais?')) return;
-    sessionStorage.clear(); localStorage.clear();
-    state = { chats: [], activeId: null, mode: 'fast' };
-    createChat(true); renderAll(); toast('Dados apagados.');
-  });
-
-  // Modo imagem no composer
-  $('btnImgMode').addEventListener('click', () => {
-    imageMode = !imageMode;
-    $('btnImgMode').style.background = imageMode ? 'rgba(255,107,0,.2)' : '';
-    $('input').placeholder = imageMode ? 'Descreva a imagem...' : 'Pergunte alguma coisa...';
+  document.addEventListener('pointerdown', function(e){
+    var b = e.target.closest('button');
+    if (!b || b.disabled) return;
+    var r = document.createElement('span');
+    r.className = 'ripple';
+    var rect = b.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    r.style.width = r.style.height = size + 'px';
+    r.style.left = (e.clientX - rect.left - size/2) + 'px';
+    r.style.top = (e.clientY - rect.top - size/2) + 'px';
+    b.appendChild(r);
+    setTimeout(function(){ r.remove(); }, 700);
   });
 }
 
-function downloadTxt(name, content) {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
-}
-
-// Ripple effect
-document.addEventListener('pointerdown', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  const r = document.createElement('span'); r.className = 'ripple';
-  const rect = b.getBoundingClientRect(); const size = Math.max(rect.width, rect.height);
-  r.style.width = r.style.height = size + 'px';
-  r.style.left = (e.clientX - rect.left - size/2) + 'px'; r.style.top = (e.clientY - rect.top - size/2) + 'px';
-  b.appendChild(r); setTimeout(() => r.remove(), 700);
-});
-
-/* =========================================================
-   INICIALIZAÇÃO
-   ========================================================= */
-function init() {
-  // Limpa dados de sessões anteriores
-  try { localStorage.clear(); } catch(e) {}
-  try { sessionStorage.clear(); } catch(e) {}
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+function init(){
+  try { localStorage.clear(); } catch(e){}
+  try { sessionStorage.clear(); } catch(e){}
 
   state = { chats: [], activeId: null, mode: 'fast' };
   createChat(true);
+
+  buildToolList();
   bindEvents();
   renderAll();
   updateSendBtn();
 
-  // Carrega Puter.js dinamicamente para STT
-  const puterScript = document.createElement('script');
-  puterScript.src = 'https://js.puter.com/v2/';
-  document.head.appendChild(puterScript);
+  // Carrega Puter.js dinamicamente
+  var s = document.createElement('script');
+  s.src = 'https://js.puter.com/v2/';
+  s.onerror = function(){ console.warn('Puter.js falhou ao carregar'); };
+  document.head.appendChild(s);
 }
 
 init();
