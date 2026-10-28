@@ -8,536 +8,152 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --bg:#000000;
-    --surface:#0a0a0a;
-    --surface2:#111111;
-    --surface3:#181818;
-    --border:#232323;
-    --border2:#2e2e2e;
-    --text:#f5f5f5;
-    --muted:#8c8c8c;
-    --orange:#ff6b00;
-    --orange-hi:#ff8226;
-    --orange-deep:#e85d00;
-    --orange-soft:rgba(255,107,0,.12);
-    --orange-glow:rgba(255,107,0,.35);
+    --bg:#000000; --surface:#0a0a0a; --surface2:#111111; --surface3:#181818;
+    --border:#232323; --border2:#2e2e2e; --text:#f5f5f5; --muted:#8c8c8c;
+    --orange:#ff6b00; --orange-hi:#ff8226; --orange-deep:#e85d00;
+    --orange-soft:rgba(255,107,0,.12); --orange-glow:rgba(255,107,0,.35);
     --ease:cubic-bezier(.22,1,.36,1);
-    --ease-2:cubic-bezier(.4,0,.2,1);
-    --radius:14px;
   }
   html,body{height:100%}
   body{
     background:var(--bg);color:var(--text);overflow:hidden;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    position:relative;
+    -webkit-font-smoothing:antialiased;
   }
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;position:relative;overflow:hidden}
-  textarea,input{font-family:inherit}
+  textarea,input,select{font-family:inherit}
   svg{display:block;flex-shrink:0}
   ::selection{background:rgba(255,107,0,.4);color:#fff}
   *::-webkit-scrollbar{width:9px;height:9px}
   *::-webkit-scrollbar-track{background:transparent}
-  *::-webkit-scrollbar-thumb{background:#282828;border-radius:8px;border:2px solid transparent;background-clip:padding-box;transition:background .2s}
-  *::-webkit-scrollbar-thumb:hover{background:#3d3d3d;background-clip:padding-box}
+  *::-webkit-scrollbar-thumb{background:#282828;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
 
-  /* ============ BACKGROUND ORBS ============ */
+  /* BACKGROUND ORBS */
   .bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-  .bg-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.14;will-change:transform}
+  .bg-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.12}
   .bg-orb.a{width:520px;height:520px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);top:-200px;left:-120px;animation:driftA 28s ease-in-out infinite}
   .bg-orb.b{width:620px;height:620px;background:radial-gradient(circle,#ff6b00 0%,transparent 70%);bottom:-320px;right:-180px;animation:driftB 34s ease-in-out infinite}
-  @keyframes driftA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(180px,140px) scale(1.1)}}
-  @keyframes driftB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-200px,-140px) scale(1.15)}}
+  @keyframes driftA{0%,100%{transform:translate(0,0)}50%{transform:translate(180px,140px)}}
+  @keyframes driftB{0%,100%{transform:translate(0,0)}50%{transform:translate(-200px,-140px)}}
 
   .app{display:flex;height:100dvh;width:100%;position:relative;z-index:1}
 
-  /* ============ RIPPLES ============ */
-  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:rippleAnim .65s ease-out;pointer-events:none;z-index:5}
-  @keyframes rippleAnim{to{transform:scale(2.6);opacity:0}}
-
-  /* ============ SIDEBAR ============ */
-  .sidebar{
-    width:296px;flex:0 0 296px;background:var(--surface);
-    border-right:1px solid var(--border);
-    display:flex;flex-direction:column;height:100%;z-index:60;
-    position:relative;
-  }
-  .sidebar::after{content:'';position:absolute;top:0;right:0;width:1px;height:100%;background:linear-gradient(180deg,transparent,rgba(255,107,0,.08),transparent);pointer-events:none}
+  /* SIDEBAR */
+  .sidebar{width:300px;flex:0 0 300px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;z-index:60;position:relative}
   .sidebar-head{padding:20px 16px 16px;display:flex;align-items:center;gap:12px}
-  .logo-mark{
-    width:36px;height:36px;border-radius:11px;background:#000;
-    border:1.5px solid var(--orange);display:grid;place-items:center;
-    box-shadow:0 0 18px var(--orange-glow);
-    animation:logoPulse 3.5s ease-in-out infinite;
-    transition:transform .3s var(--ease);
-  }
-  .logo-mark:hover{transform:rotate(-8deg) scale(1.05)}
+  .logo-mark{width:36px;height:36px;border-radius:11px;background:#000;border:1.5px solid var(--orange);display:grid;place-items:center;box-shadow:0 0 18px var(--orange-glow)}
   .logo-mark svg{width:19px;height:19px;color:var(--orange)}
-  @keyframes logoPulse{
-    0%,100%{box-shadow:0 0 18px rgba(255,107,0,.25)}
-    50%{box-shadow:0 0 28px rgba(255,107,0,.5)}
-  }
-  .brand-text{display:flex;flex-direction:column;line-height:1.18}
-  .brand-name{
-    font-size:15px;font-weight:800;letter-spacing:.2em;
-    background:linear-gradient(135deg,#ffffff 0%,#ffb27a 130%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
-  .brand-sub{font-size:9.5px;letter-spacing:.18em;color:#6e6e6e;font-weight:600;text-transform:uppercase;margin-top:1px}
-
-  .btn-new{
-    margin:0 12px 16px;display:flex;align-items:center;justify-content:center;gap:8px;
-    padding:12px;border-radius:12px;
-    background:linear-gradient(135deg,var(--orange) 0%,var(--orange-deep) 100%);
-    color:#000;font-weight:800;font-size:13px;letter-spacing:.03em;
-    transition:transform .12s var(--ease),box-shadow .2s var(--ease),filter .2s;
-    box-shadow:0 4px 18px rgba(255,107,0,.22);
-  }
-  .btn-new:hover{box-shadow:0 6px 26px rgba(255,107,0,.4);filter:brightness(1.08)}
-  .btn-new:active{transform:scale(.97)}
-  .btn-new svg{width:16px;height:16px;transition:transform .4s var(--ease)}
-  .btn-new:hover svg{transform:rotate(90deg)}
+  .brand-name{font-size:15px;font-weight:800;letter-spacing:.2em;background:linear-gradient(135deg,#fff,#ffb27a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .brand-sub{font-size:9.5px;letter-spacing:.18em;color:#6e6e6e;font-weight:600;text-transform:uppercase}
 
   .section-label{padding:0 18px 9px;font-size:9.5px;letter-spacing:.2em;color:#5a5a5a;font-weight:700;text-transform:uppercase}
 
-  .modes{display:flex;gap:6px;padding:0 12px 16px}
-  .mode{
-    flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
-    padding:11px 3px;border-radius:11px;border:1px solid var(--border);
-    background:var(--surface2);color:#8a8a8a;font-size:10px;font-weight:700;
-    letter-spacing:.05em;transition:all .22s var(--ease);position:relative;overflow:hidden;
+  .tool-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
+  .tool-btn{
+    display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;
+    font-size:12.5px;color:#c9c9c9;cursor:pointer;border:1px solid transparent;
+    transition:all .18s var(--ease);width:100%;text-align:left;margin-bottom:2px;
   }
-  .mode svg{width:17px;height:17px;color:#ffffff;opacity:.55;transition:all .22s var(--ease)}
-  .mode:hover{border-color:#3a3a3a;color:#c9c9c9;transform:translateY(-1px)}
-  .mode:hover svg{opacity:.9;transform:scale(1.08)}
-  .mode.active{
-    border-color:var(--orange);background:var(--orange-soft);color:var(--orange);
-    box-shadow:0 0 0 1px var(--orange) inset,0 4px 16px rgba(255,107,0,.15);
-  }
-  .mode.active svg{color:var(--orange);opacity:1}
+  .tool-btn:hover{background:var(--surface2);color:#fff}
+  .tool-btn.active{background:var(--surface3);color:#fff;border-color:#2c2c2c}
+  .tool-btn svg{width:16px;height:16px;color:var(--orange);opacity:.9}
+  .tool-btn .badge{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 6px;border-radius:5px;background:rgba(255,107,0,.15);color:var(--orange)}
+  .tool-btn .badge.warn{background:rgba(255,200,0,.12);color:#ffc800}
 
-  .chat-list{flex:1;overflow-y:auto;padding:0 8px 8px;min-height:0}
-  .empty-list{font-size:12px;color:#5c5c5c;text-align:center;padding:24px 0;letter-spacing:.02em}
-  .chat-item{
-    display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:10px;
-    font-size:13px;color:#c9c9c9;cursor:pointer;position:relative;
-    border:1px solid transparent;transition:all .18s var(--ease);
-    animation:itemIn .3s var(--ease) both;
-  }
-  @keyframes itemIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-  .chat-item::before{
-    content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) scaleY(0);
-    width:3px;height:60%;background:var(--orange);border-radius:0 3px 3px 0;
-    transition:transform .25s var(--ease);
-  }
-  .chat-item:hover{background:var(--surface2)}
-  .chat-item:hover::before{transform:translateY(-50%) scaleY(.5)}
-  .chat-item.active{background:var(--surface3);color:#fff;border-color:#2c2c2c}
-  .chat-item.active::before{transform:translateY(-50%) scaleY(1);box-shadow:0 0 8px var(--orange-glow)}
-  .ci-icon{width:15px;height:15px;color:#fff;opacity:.45;transition:all .2s}
-  .chat-item.active .ci-icon{color:var(--orange);opacity:1}
-  .ci-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:transform .18s var(--ease)}
-  .ci-actions{display:none;gap:1px;flex-shrink:0}
-  .chat-item:hover .ci-actions,.chat-item.active .ci-actions{display:flex;animation:actionsIn .2s var(--ease)}
-  @keyframes actionsIn{from{opacity:0;transform:translateX(4px)}to{opacity:1;transform:none}}
+  .sidebar-foot{border-top:1px solid var(--border);padding:10px 9px;display:flex;flex-direction:column;gap:2px}
+  .foot-btn{display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;font-size:12.5px;color:#b3b3b3;text-decoration:none;transition:all .18s;font-weight:500;width:100%;text-align:left}
+  .foot-btn svg{width:16px;height:16px;color:#fff;opacity:.7}
+  .foot-btn:hover{background:var(--surface2);color:#fff}
+  .foot-btn.danger:hover{background:rgba(255,60,60,.1);color:#ff6b6b}
+  .foot-btn.discord:hover{background:rgba(88,101,242,.14);color:#fff}
 
-  .icon-btn{
-    width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
-    color:#fff;transition:all .18s var(--ease);position:relative;overflow:hidden;
-  }
-  .icon-btn svg{width:14px;height:14px;opacity:.65;transition:all .18s var(--ease)}
+  /* MAIN */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:#000}
+  .topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.72);backdrop-filter:blur(14px);z-index:20}
+  .btn-menu{display:none;width:34px;height:34px;border-radius:9px;place-items:center;color:#fff}
+  .btn-menu svg{width:19px;height:19px}
+  .topbar-title{flex:1;font-size:13.5px;font-weight:600;color:#e6e6e6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .topbar-actions{display:flex;gap:2px}
+  .icon-btn{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff;transition:all .18s}
+  .icon-btn svg{width:15px;height:15px;opacity:.7}
   .icon-btn:hover{background:#252525;transform:scale(1.08)}
-  .icon-btn:hover svg{opacity:1}
-  .icon-btn:active{transform:scale(.94)}
   .icon-btn.danger:hover{background:rgba(255,60,60,.16)}
   .icon-btn.danger:hover svg{color:#ff5a5a;opacity:1}
 
-  .sidebar-foot{border-top:1px solid var(--border);padding:10px 9px;display:flex;flex-direction:column;gap:2px}
-  .foot-btn{
-    display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:9px;
-    font-size:12.5px;color:#b3b3b3;text-decoration:none;transition:all .18s var(--ease);
-    font-weight:500;width:100%;text-align:left;
-  }
-  .foot-btn svg{width:16px;height:16px;color:#fff;opacity:.7;transition:all .18s}
-  .foot-btn:hover{background:var(--surface2);color:#fff;transform:translateX(2px)}
-  .foot-btn:hover svg{opacity:1}
-  .foot-btn.danger:hover{background:rgba(255,60,60,.1);color:#ff6b6b}
-  .foot-btn.danger:hover svg{color:#ff6b6b;opacity:1}
-  .foot-btn.discord:hover{background:rgba(88,101,242,.14);color:#fff}
-  .foot-btn.discord svg{color:#fff}
-
-  /* ============ MAIN ============ */
-  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;background:#000}
-  .main::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:280px;
-    background:radial-gradient(ellipse at 50% 0%,rgba(255,107,0,.05),transparent 70%);
-    pointer-events:none;z-index:0;
-  }
-
-  .topbar{
-    height:58px;flex:0 0 58px;display:flex;align-items:center;gap:10px;
-    padding:0 16px;border-bottom:1px solid var(--border);
-    background:rgba(0,0,0,.72);backdrop-filter:blur(14px) saturate(1.2);
-    z-index:20;position:relative;
-  }
-  .btn-menu{display:none;width:34px;height:34px;border-radius:9px;place-items:center;color:#fff;transition:background .18s}
-  .btn-menu svg{width:19px;height:19px}
-  .btn-menu:hover{background:var(--surface2)}
-  .topbar-title{
-    flex:1;font-size:13.5px;font-weight:600;color:#e6e6e6;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-    animation:fadeIn .3s var(--ease);
-  }
-  @keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
-  .topbar-title .mode-tag{
-    display:inline-block;margin-left:9px;padding:3px 8px;border-radius:6px;
-    font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-    background:var(--orange-soft);color:var(--orange);vertical-align:middle;
-    border:1px solid rgba(255,107,0,.18);
-  }
-  .topbar-actions{display:flex;gap:2px}
-
-  .messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px 0 8px;min-height:0;position:relative;z-index:1;scroll-behavior:smooth}
+  .messages{flex:1;overflow-y:auto;padding:26px 0 8px;min-height:0;position:relative;z-index:1}
   .msg-wrap{max-width:860px;margin:0 auto;padding:0 20px}
-
-  .msg{display:flex;gap:12px;margin-bottom:26px;position:relative}
-  .msg.msg-new{animation:msgIn .42s var(--ease) both}
-  .msg.user.msg-new{--slide:22px}
-  .msg.ai.msg-new{--slide:-22px}
-  @keyframes msgIn{
-    from{opacity:0;transform:translateX(var(--slide,0)) translateY(10px);filter:blur(3px)}
-    to{opacity:1;transform:none;filter:blur(0)}
-  }
+  .msg{display:flex;gap:12px;margin-bottom:24px;animation:fadeUp .35s var(--ease) both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
   .msg.user{flex-direction:row-reverse}
-
-  .avatar{
-    width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;
-    font-size:9.5px;font-weight:800;letter-spacing:.05em;user-select:none;
-    transition:transform .25s var(--ease);
-  }
-  .msg:hover .avatar{transform:scale(1.06)}
+  .avatar{width:30px;height:30px;border-radius:9px;flex:0 0 30px;display:grid;place-items:center;font-size:9px;font-weight:800}
   .msg.user .avatar{background:#1a1a1a;color:#fff;border:1px solid #2e2e2e}
-  .msg.ai .avatar{
-    background:linear-gradient(135deg,var(--orange) 0%,var(--orange-deep) 100%);
-    color:#000;box-shadow:0 2px 12px rgba(255,107,0,.35);
-  }
-
-  .bubble{
-    max-width:calc(100% - 56px);font-size:14.5px;line-height:1.68;
-    overflow-wrap:anywhere;word-break:break-word;min-width:0;
-  }
-  .msg.user .bubble{
-    background:linear-gradient(135deg,#1a1a1a 0%,#141414 100%);
-    border:1px solid var(--border);
-    padding:11px 16px;border-radius:15px;border-top-right-radius:5px;
-    box-shadow:0 2px 12px rgba(0,0,0,.3);
-  }
+  .msg.ai .avatar{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;box-shadow:0 2px 12px rgba(255,107,0,.35)}
+  .bubble{max-width:calc(100% - 56px);font-size:14.5px;line-height:1.68;overflow-wrap:anywhere}
+  .msg.user .bubble{background:linear-gradient(135deg,#1a1a1a,#141414);border:1px solid var(--border);padding:11px 16px;border-radius:15px;border-top-right-radius:5px}
   .msg.ai .bubble{padding:1px 0;border-radius:15px;border-top-left-radius:5px}
-
-  .bubble p{margin:0 0 11px}
-  .bubble p:last-child{margin-bottom:0}
-  .bubble h3,.bubble h4{margin:17px 0 9px;font-size:15px;font-weight:700;color:#fff;letter-spacing:-.01em}
-  .bubble h3:first-child,.bubble h4:first-child{margin-top:0}
-  .bubble ul{margin:0 0 11px;padding-left:20px}
-  .bubble li{margin-bottom:5px}
-  .bubble li::marker{color:var(--orange)}
-  .bubble strong{color:#fff;font-weight:700}
-  .bubble em{color:#d8d8d8}
-  .bubble a{color:var(--orange);text-decoration:underline;text-underline-offset:2px;transition:color .15s}
-  .bubble a:hover{color:var(--orange-hi)}
-  .bubble code{
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-    background:#161616;border:1px solid #262626;padding:2px 6px;border-radius:5px;
-    font-size:12.5px;color:#ffb27a;
-  }
-  .bubble pre{
-    position:relative;background:#080808;border:1px solid var(--border);border-radius:11px;
-    padding:14px 15px;overflow-x:auto;margin:12px 0;
-    box-shadow:0 2px 12px rgba(0,0,0,.3);
-  }
-  .bubble pre code{
-    background:none;border:none;padding:0;font-size:12.5px;line-height:1.68;
-    color:#e4e4e4;display:block;white-space:pre;
-  }
-  .pre-copy{
-    position:absolute;top:8px;right:8px;width:27px;height:27px;border-radius:7px;
-    display:grid;place-items:center;background:#1c1c1c;border:1px solid #2e2e2e;
-    opacity:0;transition:all .2s var(--ease);color:#fff;
-  }
-  pre:hover .pre-copy{opacity:1}
-  .pre-copy:hover{background:#2a2a2a;transform:scale(1.08)}
-  .pre-copy svg{width:13px;height:13px;opacity:.85}
-
-  .caret{
-    display:inline-block;width:2px;height:1.05em;background:var(--orange);
-    vertical-align:text-bottom;margin-left:1px;border-radius:1px;
-    animation:blink 1s steps(2) infinite;
-    box-shadow:0 0 8px var(--orange-glow);
-  }
+  .bubble p{margin:0 0 11px} .bubble p:last-child{margin-bottom:0}
+  .bubble pre{position:relative;background:#080808;border:1px solid var(--border);border-radius:11px;padding:14px 15px;overflow-x:auto;margin:12px 0}
+  .bubble pre code{background:none;border:none;padding:0;font-size:12.5px;color:#e4e4e4;display:block;white-space:pre}
+  .bubble code{font-family:ui-monospace,monospace;background:#161616;border:1px solid #262626;padding:2px 6px;border-radius:5px;font-size:12.5px;color:#ffb27a}
+  .bubble ul{margin:0 0 11px;padding-left:20px} .bubble li::marker{color:var(--orange)}
+  .typing{display:inline-flex;gap:5px;padding:6px 0}
+  .typing span{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:typingBounce 1.3s ease-in-out infinite}
+  .typing span:nth-child(2){animation-delay:.15s} .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-6px);opacity:1}}
+  .caret{display:inline-block;width:2px;height:1.05em;background:var(--orange);vertical-align:text-bottom;margin-left:1px;animation:blink 1s steps(2) infinite}
   @keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
 
-  .typing{display:inline-flex;gap:5px;padding:6px 0;align-items:center}
-  .typing span{
-    width:7px;height:7px;border-radius:50%;background:var(--orange);
-    animation:typingBounce 1.3s ease-in-out infinite;
-    box-shadow:0 0 6px var(--orange-glow);
-  }
-  .typing span:nth-child(2){animation-delay:.15s}
-  .typing span:nth-child(3){animation-delay:.3s}
-  @keyframes typingBounce{
-    0%,60%,100%{transform:translateY(0);opacity:.35}
-    30%{transform:translateY(-6px);opacity:1}
-  }
+  /* tool panel in chat */
+  .tool-panel{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0;max-width:520px}
+  .tool-panel h4{font-size:12px;letter-spacing:.1em;color:var(--orange);margin-bottom:10px;text-transform:uppercase}
+  .tool-panel .field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .tool-panel .field label{font-size:10.5px;color:#8a8a8a;font-weight:600;letter-spacing:.05em}
+  .tool-panel input,.tool-panel select,.tool-panel textarea{background:#0a0a0a;border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
+  .tool-panel input:focus,.tool-panel select:focus,.tool-panel textarea:focus{border-color:var(--orange)}
+  .tool-panel .row{display:flex;gap:8px;flex-wrap:wrap}
+  .tool-panel .row > *{flex:1;min-width:100px}
+  .btn-run{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;padding:10px 18px;border-radius:9px;font-weight:800;font-size:12px;letter-spacing:.03em;transition:all .18s;display:inline-flex;align-items:center;gap:7px}
+  .btn-run:hover{filter:brightness(1.1);box-shadow:0 4px 18px rgba(255,107,0,.4)}
+  .btn-run:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .btn-run svg{width:14px;height:14px}
 
-  .err{color:#ff6b6b;font-size:13px}
+  .media-result{margin-top:12px}
+  .media-result audio,.media-result video{width:100%;border-radius:10px;background:#000}
+  .media-result img{max-width:100%;border-radius:10px;display:block}
 
-  /* images */
-  .img-card{margin:6px 0}
-  .img-prompt{
-    font-size:11.5px;color:#8a8a8a;margin-bottom:10px;letter-spacing:.02em;
-    padding-left:10px;border-left:2px solid var(--orange);font-style:italic;
-  }
-  .img-shell{
-    position:relative;border-radius:13px;overflow:hidden;border:1px solid var(--border);
-    background:var(--surface2);max-width:460px;min-height:140px;
-    transition:transform .3s var(--ease),box-shadow .3s var(--ease);
-    box-shadow:0 4px 20px rgba(0,0,0,.4);
-  }
-  .img-shell:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.55),0 0 0 1px rgba(255,107,0,.15)}
-  .img-shell img{width:100%;display:block;opacity:0;transition:opacity .5s var(--ease)}
-  .img-shell img.loaded{opacity:1}
-  .img-loading{
-    position:absolute;inset:0;display:grid;place-items:center;
-    font-size:11.5px;letter-spacing:.16em;color:var(--orange);font-weight:700;
-    text-transform:uppercase;overflow:hidden;
-  }
-  .img-loading::after{
-    content:"";position:absolute;inset:0;
-    background:linear-gradient(100deg,transparent 20%,rgba(255,107,0,.08) 50%,transparent 80%);
-    animation:shimmer 1.8s infinite;
-  }
-  @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-  .img-actions{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
-  .chip-btn{
-    display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:9px;
-    background:var(--surface2);border:1px solid var(--border);color:#d0d0d0;
-    font-size:11.5px;font-weight:600;transition:all .18s var(--ease);
-  }
-  .chip-btn svg{width:13px;height:13px;color:#fff;opacity:.8;transition:transform .2s var(--ease)}
-  .chip-btn:hover{background:var(--surface3);border-color:#3a3a3a;color:#fff;transform:translateY(-1px)}
-  .chip-btn:hover svg{opacity:1;transform:scale(1.1)}
-  .chip-btn:active{transform:translateY(0) scale(.98)}
-
-  /* empty */
-  .empty{
-    height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:24px;animation:fadeIn .5s var(--ease);
-  }
-  .empty-mark{
-    width:72px;height:72px;border-radius:21px;background:#000;border:2px solid var(--orange);
-    display:grid;place-items:center;margin-bottom:24px;
-    box-shadow:0 0 50px rgba(255,107,0,.3);
-    animation:emptyFloat 4s ease-in-out infinite;
-  }
-  @keyframes emptyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .empty-mark svg{width:34px;height:34px;color:var(--orange)}
-  .empty h1{
-    font-size:27px;font-weight:800;letter-spacing:.22em;margin-bottom:12px;
-    background:linear-gradient(180deg,#ffffff 0%,#ff8226 150%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
-  .empty p{font-size:13.5px;color:#7a7a7a;max-width:420px;line-height:1.7;margin-bottom:28px}
-  .chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:600px}
-  .chip{
-    padding:10px 16px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);
-    font-size:12.5px;color:#bfbfbf;transition:all .2s var(--ease);
-    animation:chipIn .4s var(--ease) both;
-  }
-  .chip:nth-child(1){animation-delay:.05s}
-  .chip:nth-child(2){animation-delay:.1s}
-  .chip:nth-child(3){animation-delay:.15s}
-  .chip:nth-child(4){animation-delay:.2s}
-  @keyframes chipIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .chip:hover{background:var(--surface3);border-color:var(--orange);color:#fff;transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,107,0,.15)}
-
-  /* composer */
-  .composer-wrap{
-    padding:12px 20px 18px;
-    background:linear-gradient(to top,#000 60%,rgba(0,0,0,.6) 85%,transparent);
-    flex-shrink:0;position:relative;z-index:2;
-  }
-  .composer{
-    max-width:860px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);
-    border-radius:16px;padding:9px 10px;display:flex;align-items:flex-end;gap:6px;
-    transition:all .25s var(--ease);position:relative;
-  }
-  .composer::before{
-    content:'';position:absolute;inset:-1px;border-radius:17px;
-    background:linear-gradient(135deg,rgba(255,107,0,.5),transparent 50%,rgba(255,107,0,.3));
-    opacity:0;transition:opacity .3s var(--ease);z-index:-1;
-  }
-  .composer:focus-within{
-    border-color:#3e3e3e;
-    box-shadow:0 0 0 3px rgba(255,107,0,.08),0 8px 24px rgba(0,0,0,.4);
-  }
-  .composer:focus-within::before{opacity:1}
-  .composer.img-mode{
-    border-color:var(--orange);
-    box-shadow:0 0 0 3px rgba(255,107,0,.12),0 8px 24px rgba(255,107,0,.1);
-  }
-  .comp-btn{
-    width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:0 0 36px;
-    color:#fff;transition:all .18s var(--ease);
-  }
-  .comp-btn svg{width:18px;height:18px;opacity:.65;transition:all .2s var(--ease)}
+  .composer-wrap{padding:12px 20px 18px;background:linear-gradient(to top,#000 60%,transparent);flex-shrink:0;position:relative;z-index:2}
+  .composer{max-width:860px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:9px 10px;display:flex;align-items:flex-end;gap:6px;transition:all .25s var(--ease)}
+  .composer:focus-within{border-color:#3e3e3e;box-shadow:0 0 0 3px rgba(255,107,0,.08)}
+  .comp-btn{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:0 0 36px;color:#fff}
+  .comp-btn svg{width:18px;height:18px;opacity:.65}
   .comp-btn:hover{background:#1f1f1f}
-  .comp-btn:hover svg{opacity:1;transform:scale(1.08)}
-  .comp-btn:active{transform:scale(.94)}
-  .comp-btn.on{background:var(--orange-soft);color:var(--orange);box-shadow:0 0 0 1px rgba(255,107,0,.3) inset}
-  .comp-btn.on svg{color:var(--orange);opacity:1;animation:imgPulse 2s ease-in-out infinite}
-  @keyframes imgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-
-  #input{
-    flex:1;background:none;border:none;outline:none;color:var(--text);
-    resize:none;font-size:14.5px;line-height:1.5;max-height:180px;min-height:24px;
-    padding:7px 4px;overflow-y:auto;
-  }
-  #input::placeholder{color:#6a6a6a;transition:color .2s}
-  #input:focus::placeholder{color:#7a7a7a}
-
-  .btn-send{
-    width:38px;height:38px;border-radius:10px;
-    background:linear-gradient(135deg,var(--orange) 0%,var(--orange-deep) 100%);
-    color:#000;display:grid;place-items:center;flex:0 0 38px;
-    transition:all .2s var(--ease);position:relative;overflow:hidden;
-    box-shadow:0 2px 10px rgba(255,107,0,.25);
-  }
-  .btn-send svg{width:18px;height:18px;transition:transform .25s var(--ease)}
-  .btn-send:hover:not(:disabled){box-shadow:0 4px 18px rgba(255,107,0,.45);filter:brightness(1.08)}
-  .btn-send:hover:not(:disabled) svg{transform:translateY(-1px)}
-  .btn-send:active:not(:disabled){transform:scale(.95)}
+  #input{flex:1;background:none;border:none;outline:none;color:var(--text);resize:none;font-size:14.5px;line-height:1.5;max-height:180px;min-height:24px;padding:7px 4px}
+  #input::placeholder{color:#6a6a6a}
+  .btn-send{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#000;display:grid;place-items:center;flex:0 0 38px;transition:all .2s;box-shadow:0 2px 10px rgba(255,107,0,.25)}
+  .btn-send svg{width:18px;height:18px}
   .btn-send:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
-  .spin{animation:spin 1s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  .composer-hint{
-    max-width:860px;margin:9px auto 0;text-align:center;font-size:10.5px;
-    color:#4f4f4f;letter-spacing:.03em;
-  }
-  .composer-hint kbd{
-    background:#161616;border:1px solid #262626;padding:1px 5px;border-radius:4px;
-    font-family:ui-monospace,monospace;font-size:10px;color:#8a8a8a;
-  }
-
-  /* ============ MODAL CODE ============ */
-  .overlay{
-    position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);
-    display:none;align-items:center;justify-content:center;z-index:200;padding:20px;
-  }
-  .overlay.open{display:flex;animation:fadeIn .2s var(--ease)}
-  .modal{
-    width:min(1000px,100%);height:min(780px,92vh);background:var(--surface);
-    border:1px solid #2b2b2b;border-radius:18px;display:flex;flex-direction:column;
-    overflow:hidden;box-shadow:0 30px 100px rgba(0,0,0,.9),0 0 0 1px rgba(255,107,0,.08);
-    animation:pop .24s var(--ease);position:relative;
-  }
-  @keyframes pop{from{transform:scale(.96) translateY(8px);opacity:0}to{transform:none;opacity:1}}
-  .modal-head{
-    display:flex;align-items:center;gap:12px;padding:14px 16px;
-    border-bottom:1px solid var(--border);flex-shrink:0;
-    background:linear-gradient(180deg,#0d0d0d,#0a0a0a);
-  }
-  .modal-head .m-icon{
-    width:32px;height:32px;border-radius:9px;background:var(--orange-soft);
-    display:grid;place-items:center;color:var(--orange);
-    border:1px solid rgba(255,107,0,.2);
-  }
-  .modal-head .m-icon svg{width:17px;height:17px}
-  .modal-head h2{font-size:13.5px;font-weight:800;letter-spacing:.1em;color:#fff}
-  .modal-head .m-sub{font-size:10.5px;color:#6e6e6e;letter-spacing:.05em;margin-top:2px}
-  .modal-head .spacer{flex:1}
-  .code-input-area{
-    padding:14px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;
-    align-items:flex-end;flex-shrink:0;background:var(--surface2);
-  }
-  #codeInput{
-    flex:1;background:#070707;border:1px solid var(--border);border-radius:11px;
-    padding:12px 14px;color:var(--text);font-size:13.5px;line-height:1.55;resize:none;
-    outline:none;max-height:140px;min-height:46px;transition:all .2s var(--ease);
-  }
-  #codeInput:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
-  #codeInput::placeholder{color:#5e5e5e}
-  .code-out{
-    flex:1;margin:0;padding:20px;overflow:auto;background:#050505;
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    font-size:12.8px;line-height:1.72;color:#e2e2e2;white-space:pre-wrap;
-    word-break:break-word;min-height:0;transition:background .3s;
-  }
-  .code-out:empty::before{
-    content:"O código gerado aparece aqui, escrito em tempo real.";
-    color:#454545;font-size:12.5px;font-style:italic;
-  }
-  .code-out.streaming{
-    background:#0a0705;
-    box-shadow:inset 0 0 60px rgba(255,107,0,.05);
-  }
-  .code-out.streaming::after{
-    content:"";display:inline-block;width:8px;height:15px;background:var(--orange);
-    vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite;
-    box-shadow:0 0 8px var(--orange-glow);
-  }
+  .composer-hint{max-width:860px;margin:9px auto 0;text-align:center;font-size:10.5px;color:#4f4f4f}
+  .composer-hint kbd{background:#161616;border:1px solid #262626;padding:1px 5px;border-radius:4px;font-family:monospace;font-size:10px;color:#8a8a8a}
 
   /* toast */
-  #toast{
-    position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px) scale(.95);
-    background:linear-gradient(135deg,#181818 0%,#111111 100%);
-    border:1px solid #333;color:#f0f0f0;padding:12px 22px;
-    border-radius:12px;font-size:12.5px;font-weight:600;letter-spacing:.02em;
-    opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:400;
-    box-shadow:0 16px 44px rgba(0,0,0,.8),0 0 0 1px rgba(255,107,0,.1);
-    max-width:calc(100vw - 40px);text-align:center;
-  }
+  #toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px) scale(.95);background:linear-gradient(135deg,#181818,#111);border:1px solid #333;color:#f0f0f0;padding:12px 22px;border-radius:12px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:400;box-shadow:0 16px 44px rgba(0,0,0,.8)}
   #toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
-  #toast .dot{
-    display:inline-block;width:7px;height:7px;border-radius:50%;
-    background:var(--orange);margin-right:9px;vertical-align:1px;
-    box-shadow:0 0 8px var(--orange-glow);
-    animation:pulseDot 1.5s ease-in-out infinite;
-  }
-  @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+  #toast .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--orange);margin-right:9px;box-shadow:0 0 8px var(--orange-glow);animation:pulseDot 1.5s ease-in-out infinite}
+  @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.5}}
 
-  /* scrim */
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none;backdrop-filter:blur(3px)}
-  .scrim.open{display:block;animation:fadeIn .2s var(--ease)}
-
-  /* focus rings */
-  button:focus-visible,a:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-  textarea:focus-visible{outline:none}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none}
+  .scrim.open{display:block}
+  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);animation:rippleAnim .65s ease-out;pointer-events:none;z-index:5}
+  @keyframes rippleAnim{to{transform:scale(2.6);opacity:0}}
 
   @media (max-width:880px){
-    .sidebar{
-      position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);
-      transition:transform .3s var(--ease);width:288px;flex-basis:288px;
-      box-shadow:20px 0 60px rgba(0,0,0,.7);
-    }
+    .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .3s var(--ease);width:290px;flex-basis:290px}
     .sidebar.open{transform:translateX(0)}
     .btn-menu{display:grid}
     .msg-wrap{padding:0 14px}
     .composer-wrap{padding:10px 12px 14px}
     .bubble{max-width:calc(100% - 48px);font-size:14px}
-    .overlay{padding:0}
-    .modal{height:100dvh;border-radius:0;border:none;width:100%}
-    .empty h1{font-size:22px}
-    .topbar-actions .icon-btn{width:30px;height:30px}
-  }
-  @media (max-width:520px){
-    .empty-mark{width:60px;height:60px}
-    .empty p{font-size:12.5px}
-    .chip{font-size:11.5px;padding:8px 13px}
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+    .tool-panel{padding:12px}
   }
 </style>
 </head>
@@ -549,54 +165,70 @@
 </div>
 
 <div class="app">
-  <!-- ================= SIDEBAR ================= -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-          <path d="M4 6h16M12 6v13"/>
-        </svg>
-      </div>
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 6h16M12 6v13"/></svg></div>
       <div class="brand-text">
         <span class="brand-name">TRUX AI</span>
-        <span class="brand-sub">Anônimo · Local</span>
+        <span class="brand-sub">Anônimo · Multiferramentas</span>
       </div>
     </div>
 
-    <button class="btn-new" id="btnNew">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Novo chat
-    </button>
-
-    <div class="section-label">Modo da IA</div>
-    <div class="modes">
-      <button class="mode" data-mode="fast">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
-        Rápida
+    <div class="section-label">Ferramentas de IA</div>
+    <div class="tool-list">
+      <button class="tool-btn active" data-tool="chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
+        Chat / Texto
+        <span class="badge">GROQ</span>
       </button>
-      <button class="mode" data-mode="think">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5.8A3 3 0 0 0 7 18a3 3 0 0 0 5 1.5V4.5A2.5 2.5 0 0 0 9 4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5.8A3 3 0 0 1 17 18a3 3 0 0 1-5 1.5"/></svg>
-        Pensativa
+      <button class="tool-btn" data-tool="image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        Gerar Imagem
+        <span class="badge">Pollinations</span>
       </button>
-      <button class="mode" data-mode="code">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
-        Code
+      <button class="tool-btn" data-tool="tts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        Texto para Fala
+        <span class="badge">Edge TTS</span>
+      </button>
+      <button class="tool-btn" data-tool="stt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+        Transcrever Áudio
+        <span class="badge warn">Puter</span>
+      </button>
+      <button class="tool-btn" data-tool="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Buscar na Web
+        <span class="badge">Tavily</span>
+      </button>
+      <button class="tool-btn" data-tool="music">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Gerar Música
+        <span class="badge warn">ACE</span>
+      </button>
+      <button class="tool-btn" data-tool="video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg>
+        Gerar Vídeo
+        <span class="badge warn">Agnes</span>
+      </button>
+      <button class="tool-btn" data-tool="code">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+        Modo Code
+        <span class="badge">GROQ</span>
       </button>
     </div>
-
-    <div class="section-label">Conversas</div>
-    <div class="chat-list" id="chatList"></div>
 
     <div class="sidebar-foot">
       <button class="foot-btn" id="btnExportAll">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
         Baixar todas as conversas
       </button>
       <button class="foot-btn danger" id="btnWipe">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 17l-3-3 9-9 5 5-9 9H6z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M6 17l-3-3 9-9 5 5-9 9H6z"/></svg>
         Apagar todos os dados
       </button>
-      <a class="foot-btn discord" href="https://discord.gg/ZTaKs2KH4q" target="_blank" rel="noopener noreferrer">
+      <a class="foot-btn discord" href="https://discord.gg/ZTaKs2KH4q" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
         Entrar no Discord
       </a>
@@ -605,1020 +237,479 @@
 
   <div class="scrim" id="scrim"></div>
 
-  <!-- ================= MAIN ================= -->
+  <!-- MAIN -->
   <main class="main">
     <header class="topbar">
-      <button class="btn-menu" id="btnMenu" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-      <div class="topbar-title" id="topTitle">TRUX AI</div>
+      <button class="btn-menu" id="btnMenu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="topbar-title" id="topTitle">TRUX AI · Chat</div>
       <div class="topbar-actions">
-        <button class="icon-btn" id="btnBranch" title="Criar branch a partir de um resumo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg>
-        </button>
-        <button class="icon-btn" id="btnDownloadChat" title="Baixar este chat em .TXT">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
-        </button>
-        <button class="icon-btn danger" id="btnDeleteChat" title="Apagar este chat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>
-        </button>
+        <button class="icon-btn" id="btnBranch" title="Branch a partir de resumo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg></button>
+        <button class="icon-btn" id="btnDownloadChat" title="Baixar chat .TXT"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg></button>
+        <button class="icon-btn danger" id="btnDeleteChat" title="Apagar chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg></button>
       </div>
     </header>
 
     <div class="messages" id="messages"></div>
 
     <div class="composer-wrap">
-      <div class="composer" id="composer">
-        <button class="comp-btn" id="btnImg" title="Gerar imagem">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </button>
+      <div class="composer">
+        <button class="comp-btn" id="btnImgMode" title="Modo imagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></button>
         <textarea id="input" rows="1" placeholder="Pergunte alguma coisa para a TRUX AI..."></textarea>
-        <button class="btn-send" id="btnSend" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-        </button>
+        <button class="btn-send" id="btnSend" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
       </div>
-      <div class="composer-hint"><kbd>Enter</kbd> envia · <kbd>Shift</kbd>+<kbd>Enter</kbd> nova linha · Nada é salvo após sair</div>
+      <div class="composer-hint"><kbd>Enter</kbd> envia · Ferramentas ilimitadas e com limite por sessão</div>
     </div>
   </main>
-</div>
-
-<!-- ================= CODE MODAL ================= -->
-<div class="overlay" id="codeOverlay">
-  <div class="modal">
-    <div class="modal-head">
-      <div class="m-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
-      </div>
-      <div>
-        <h2>TRUX CODE</h2>
-        <div class="m-sub">Descreva o que precisa · o código é escrito ao vivo</div>
-      </div>
-      <div class="spacer"></div>
-      <button class="icon-btn" id="codeCopy" title="Copiar código">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-      </button>
-      <button class="icon-btn" id="codeDownload" title="Baixar como .TXT">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>
-      </button>
-      <button class="icon-btn" id="codeClose" title="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-
-    <div class="code-input-area">
-      <textarea id="codeInput" rows="1" placeholder="Ex.: crie uma função em JavaScript que valide CPF..."></textarea>
-      <button class="btn-send" id="codeSend" style="flex:0 0 44px;width:44px;height:44px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-      </button>
-    </div>
-
-    <pre class="code-out" id="codeOut"></pre>
-  </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
 /* =========================================================
-   TRUX AI — app 100% local, sem login, sem servidor próprio.
-   Os dados vivem apenas na memória da sessão atual.
-   Recarregar/visitar o site novamente = dados apagados.
+   CONFIGURAÇÃO E ESTADO
    ========================================================= */
-
 const GROQ_KEY = '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';
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-/* Modelos atuais da Groq (substitutos do llama-3.3-70b descontinuado) */
-const MODELS = {
-  fast:  'openai/gpt-oss-20b',
-  think: 'openai/gpt-oss-120b',
-  code:  'openai/gpt-oss-120b'
-};
-
-const MODE_LABEL = { fast:'RÁPIDA', think:'PENSATIVA', code:'CODE' };
-
+const MODELS = { fast:'openai/gpt-oss-20b', think:'openai/gpt-oss-120b', code:'openai/gpt-oss-120b' };
 const SYSTEM = {
-  fast: 'Você é TRUX AI, um assistente de IA rápido e objetivo. Responda em português do Brasil de forma clara, curta e direta. Use markdown quando ajudar. Nada de enrolação.',
-  think: 'Você é TRUX AI, um assistente de IA analítico e cuidadoso. Pense antes de responder, estruture raciocínios complexos em etapas, mostre o porquê das conclusões e considere nuances e exceções. Responda em português do Brasil com markdown bem organizado.',
-  code: 'Você é TRUX AI no modo CODE, um engenheiro de software sênior. Sempre entregue código completo, funcional e pronto para uso, dentro de blocos de código com a linguagem indicada. Explique brevemente o que o código faz e como usar. Responda em português do Brasil.'
+  fast: 'Você é TRUX AI, assistente rápido e objetivo. Responda em português do Brasil, claro e direto.',
+  think: 'Você é TRUX AI, assistente analítico. Pense em etapas, mostre raciocínio, responda em português do Brasil.',
+  code: 'Você é TRUX AI no modo CODE, engenheiro sênior. Entregue código completo e funcional em blocos, explique brevemente. Responda em português.'
 };
 
-/* Estado em memória — nada persiste entre visitas */
-let state = { chats: [], activeId: null, mode: 'fast' };
-let busy = false;
-let imageMode = false;
-let lastCodeOutput = '';
-let _lastRendered = { chatId: null, count: 0 };
-
-/* ---------- ícones ---------- */
-const ICON = {
-  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
-  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></svg>',
-  branch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-2.5 4-6 4"/></svg>',
-  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>',
-  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
-  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>',
-  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
-  spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M12 6v13"/></svg>',
-  send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
-  spinner: '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg>'
+// Limites por sessão (sessionStorage) para APIs quase ilimitadas
+const LIMITS = {
+  veida: { max: 7, label: 'Veida (imagens/dia)' },
+  agnes: { max: 3, label: 'Agnes (vídeos/sessão)' },
+  ace: { max: 5, label: 'ACE Music (músicas/sessão)' },
+  puter_stt: { max: 10, label: 'Puter STT (transcrições/sessão)' }
 };
 
-/* ---------- helpers ---------- */
-const $ = (id) => document.getElementById(id);
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function getUsage(key) {
+  const raw = sessionStorage.getItem('trux_usage_' + key);
+  return raw ? JSON.parse(raw) : { count: 0, date: new Date().toDateString() };
+}
+function setUsage(key, data) { sessionStorage.setItem('trux_usage_' + key, JSON.stringify(data)); }
+function canUse(key) {
+  const u = getUsage(key);
+  const limit = LIMITS[key];
+  if (!limit) return true;
+  if (u.date !== new Date().toDateString()) { setUsage(key, { count: 0, date: new Date().toDateString() }); return true; }
+  return u.count < limit.max;
+}
+function recordUsage(key) {
+  const u = getUsage(key);
+  if (u.date !== new Date().toDateString()) u.count = 0;
+  u.count++;
+  u.date = new Date().toDateString();
+  setUsage(key, u);
 }
 
+// Estado dos chats
+let state = { chats: [], activeId: null, mode: 'fast' };
+let busy = false;
+let currentTool = 'chat';
+let imageMode = false;
+
+const $ = id => document.getElementById(id);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
 let toastTimer;
-function toast(msg){
+function toast(msg) {
   const t = $('toast');
   t.innerHTML = '<span class="dot"></span>' + escapeHtml(msg);
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2700);
-}
-
-/* ripple em botões */
-function addRipple(btn, e){
-  if (!btn || btn.disabled) return;
-  const r = document.createElement('span');
-  r.className = 'ripple';
-  const rect = btn.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  const x = (e.clientX ?? rect.left + rect.width / 2) - rect.left;
-  const y = (e.clientY ?? rect.top + rect.height / 2) - rect.top;
-  r.style.width = r.style.height = size + 'px';
-  r.style.left = (x - size / 2) + 'px';
-  r.style.top = (y - size / 2) + 'px';
-  btn.appendChild(r);
-  setTimeout(() => r.remove(), 700);
-}
-document.addEventListener('pointerdown', (e) => {
-  const b = e.target.closest('button');
-  if (b) addRipple(b, e);
-});
-
-/* =========================================================
-   MARKDOWN SIMPLES
-   ========================================================= */
-function renderInline(text){
-  let t = escapeHtml(text);
-  t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
-  t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-  t = t.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
-  t = t.replace(/^###\s+(.*)$/gm, '<h4>$1</h4>');
-  t = t.replace(/^##\s+(.*)$/gm, '<h3>$1</h3>');
-  t = t.replace(/^#\s+(.*)$/gm, '<h3>$1</h3>');
-  t = t.replace(/(?:^|\n)((?:[ \t]*[-*]\s+.*(?:\n|$))+)/g, (m, block) => {
-    const items = block.trim().split('\n')
-      .map(l => '<li>' + l.replace(/^[ \t]*[-*]\s+/, '') + '</li>').join('');
-    return '\n<ul>' + items + '</ul>\n';
-  });
-  t = t.split(/\n{2,}/).map(p => {
-    const trimmed = p.trim();
-    if (!trimmed) return '';
-    if (/^<(h3|h4|ul|pre|blockquote)/.test(trimmed)) return trimmed;
-    return '<p>' + trimmed.replace(/\n/g, '<br>') + '</p>';
-  }).join('');
-  return t;
-}
-
-function renderMD(text){
-  if (!text) return '';
-  let html = '';
-  const parts = String(text).split(/```/);
-  for (let i = 0; i < parts.length; i++){
-    if (i % 2 === 1){
-      let code = parts[i];
-      let lang = '';
-      const nl = code.indexOf('\n');
-      if (nl > -1){
-        const first = code.slice(0, nl).trim();
-        if (/^[\w+#.-]{0,20}$/.test(first)){ lang = first; code = code.slice(nl + 1); }
-      }
-      html += '<pre data-lang="' + escapeHtml(lang) + '"><code>' + escapeHtml(code.replace(/\n$/, '')) + '</code></pre>';
-    } else {
-      html += renderInline(parts[i]);
-    }
-  }
-  return html;
-}
-
-function attachCodeCopy(root){
-  root.querySelectorAll('pre').forEach(pre => {
-    if (pre.querySelector('.pre-copy')) return;
-    const btn = document.createElement('button');
-    btn.className = 'pre-copy';
-    btn.title = 'Copiar código';
-    btn.innerHTML = ICON.copy;
-    btn.addEventListener('click', () => {
-      const codeEl = pre.querySelector('code');
-      copyText(codeEl ? codeEl.textContent : '');
-    });
-    pre.appendChild(btn);
-  });
-}
-
-function copyText(txt){
-  if (!txt) { toast('Nada para copiar'); return; }
-  if (navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(txt).then(() => toast('Copiado')).catch(() => fallbackCopy(txt));
-  } else fallbackCopy(txt);
-}
-function fallbackCopy(txt){
-  const ta = document.createElement('textarea');
-  ta.value = txt;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); toast('Copiado'); } catch(e){ toast('Não foi possível copiar'); }
-  document.body.removeChild(ta);
-}
-
-function downloadTxt(name, content){
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = name.endsWith('.txt') ? name : name + '.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
 /* =========================================================
-   CHATS
+   CHAT / TEXTO (GROQ)
    ========================================================= */
-function activeChat(){
-  return state.chats.find(c => c.id === state.activeId) || null;
-}
-
-function createChat(silent){
-  const c = {
-    id: uid(),
-    title: 'Novo chat',
-    mode: state.mode || 'fast',
-    messages: [],
-    createdAt: Date.now()
-  };
-  state.chats.unshift(c);
-  state.activeId = c.id;
-  _lastRendered = { chatId: null, count: 0 };
-  if (!silent) renderAll();
-  return c;
-}
-
-function deleteChat(id){
-  const chat = state.chats.find(c => c.id === id);
-  if (!chat) return;
-  if (!confirm('Apagar este chat? Esta ação não pode ser desfeita.')) return;
-  state.chats = state.chats.filter(c => c.id !== id);
-  if (state.activeId === id){
-    state.activeId = state.chats.length ? state.chats[0].id : null;
-  }
-  if (!state.chats.length) createChat(true);
-  _lastRendered = { chatId: null, count: 0 };
-  renderAll();
-  toast('Chat apagado');
-}
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-function renderAll(){
-  renderChatList();
-  renderMessages();
-  renderModes();
-  renderTopbar();
-}
-
-function renderModes(){
-  const chat = activeChat();
-  const m = chat ? chat.mode : state.mode;
-  document.querySelectorAll('.mode').forEach(b => {
-    b.classList.toggle('active', b.dataset.mode === m);
-  });
-}
-
-function renderTopbar(){
-  const chat = activeChat();
-  const el = $('topTitle');
-  if (!chat){ el.textContent = 'TRUX AI'; return; }
-  const title = chat.title || 'Novo chat';
-  el.innerHTML = escapeHtml(title) +
-    '<span class="mode-tag">' + (MODE_LABEL[chat.mode] || 'RÁPIDA') + '</span>';
-}
-
-function renderChatList(){
-  const el = $('chatList');
-  el.innerHTML = '';
-  if (!state.chats.length){
-    el.innerHTML = '<div class="empty-list">Nenhum chat ainda</div>';
-    return;
-  }
-  state.chats.forEach((c, i) => {
-    const item = document.createElement('div');
-    item.className = 'chat-item' + (c.id === state.activeId ? ' active' : '');
-    item.style.animationDelay = Math.min(i * 0.03, 0.3) + 's';
-    item.innerHTML =
-      '<span class="ci-icon">' + ICON.chat + '</span>' +
-      '<span class="ci-title">' + escapeHtml(c.title || 'Novo chat') + '</span>' +
-      '<span class="ci-actions">' +
-        '<button class="icon-btn" data-act="branch" title="Criar branch">' + ICON.branch + '</button>' +
-        '<button class="icon-btn danger" data-act="delete" title="Apagar chat">' + ICON.trash + '</button>' +
-      '</span>';
-
-    item.addEventListener('click', (e) => {
-      const act = e.target.closest('[data-act]');
-      if (act){
-        e.stopPropagation();
-        if (act.dataset.act === 'branch') branchChat(c.id);
-        else deleteChat(c.id);
-        return;
-      }
-      state.activeId = c.id;
-      _lastRendered = { chatId: null, count: 0 };
-      renderAll();
-      closeSidebar();
-    });
-    el.appendChild(item);
-  });
-}
-
-function renderMessages(){
-  const el = $('messages');
-  const chat = activeChat();
-  el.innerHTML = '';
-
-  if (!chat || !chat.messages.length){
-    renderEmptyState(el);
-    _lastRendered = { chatId: chat ? chat.id : null, count: 0 };
-    return;
-  }
-
-  const sameChat = _lastRendered.chatId === chat.id;
-  const prevCount = sameChat ? _lastRendered.count : 0;
-
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap';
-  chat.messages.forEach((m, i) => {
-    const node = buildMessage(m);
-    if (i >= prevCount) node.classList.add('msg-new');
-    wrap.appendChild(node);
-  });
-  el.appendChild(wrap);
-
-  _lastRendered = { chatId: chat.id, count: chat.messages.length };
-  scrollBottom(true);
-}
-
-function renderEmptyState(el){
-  const div = document.createElement('div');
-  div.className = 'empty';
-  div.innerHTML =
-    '<div class="empty-mark">' + ICON.spark + '</div>' +
-    '<h1>TRUX AI</h1>' +
-    '<p>Sem login, sem rastreio, sem histórico. Suas conversas existem apenas nesta sessão e desaparecem quando você sai.</p>' +
-    '<div class="chips">' +
-      '<button class="chip" data-p="Explique computação quântica de forma simples">Explique computação quântica</button>' +
-      '<button class="chip" data-p="Escreva um roteiro curto sobre solidão urbana">Roteiro sobre solidão urbana</button>' +
-      '<button class="chip" data-p="Me dê 5 ideias de projetos em JavaScript">Ideias de projetos em JS</button>' +
-      '<button class="chip" data-p="Resuma a história da internet em 10 linhas">História da internet</button>' +
-    '</div>';
-
-  div.querySelectorAll('.chip').forEach(ch => {
-    ch.addEventListener('click', () => {
-      $('input').value = ch.dataset.p;
-      autoGrow($('input'));
-      updateSendBtn();
-      $('input').focus();
-    });
-  });
-
-  el.appendChild(div);
-}
-
-function buildMessage(m){
-  const d = document.createElement('div');
-  d.className = 'msg ' + (m.role === 'user' ? 'user' : 'ai');
-
-  const av = document.createElement('div');
-  av.className = 'avatar';
-  av.textContent = m.role === 'user' ? 'EU' : 'TRUX';
-
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-
-  if (m.type === 'image'){
-    bubble.appendChild(buildImageCard(m));
-  } else {
-    bubble.innerHTML = renderMD(m.content || '');
-    attachCodeCopy(bubble);
-  }
-
-  d.appendChild(av);
-  d.appendChild(bubble);
-  return d;
-}
-
-function buildImageCard(m){
-  const card = document.createElement('div');
-  card.className = 'img-card';
-
-  const prompt = document.createElement('div');
-  prompt.className = 'img-prompt';
-  prompt.textContent = m.prompt;
-  card.appendChild(prompt);
-
-  const shell = document.createElement('div');
-  shell.className = 'img-shell';
-
-  const loading = document.createElement('div');
-  loading.className = 'img-loading';
-  loading.textContent = 'Gerando';
-  shell.appendChild(loading);
-
-  const img = document.createElement('img');
-  img.alt = m.prompt;
-  img.loading = 'lazy';
-  img.addEventListener('load', () => {
-    img.classList.add('loaded');
-    loading.remove();
-  });
-  img.addEventListener('error', () => {
-    loading.textContent = 'Falha ao carregar';
-    loading.style.color = '#ff6b6b';
-  });
-  img.src = m.url;
-  shell.appendChild(img);
-  card.appendChild(shell);
-
-  const actions = document.createElement('div');
-  actions.className = 'img-actions';
-
-  const dl = document.createElement('button');
-  dl.className = 'chip-btn';
-  dl.innerHTML = ICON.download + 'Baixar imagem';
-  dl.addEventListener('click', () => downloadImage(m.url, m.prompt));
-  actions.appendChild(dl);
-
-  const regen = document.createElement('button');
-  regen.className = 'chip-btn';
-  regen.innerHTML = ICON.image + 'Regenerar';
-  regen.addEventListener('click', () => {
-    if (busy) return;
-    generateImage(m.prompt, true);
-  });
-  actions.appendChild(regen);
-
-  card.appendChild(actions);
-  return card;
-}
-
-function scrollBottom(force){
-  const el = $('messages');
-  if (!el) return;
-  if (force || (el.scrollHeight - el.scrollTop - el.clientHeight < 240)){
-    el.scrollTop = el.scrollHeight;
-  }
-}
-
-/* =========================================================
-   GROQ API
-   ========================================================= */
-async function groqStream(messages, model, onChunk){
+async function groqStream(messages, model, onChunk) {
   const res = await fetch(GROQ_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + GROQ_KEY
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: true,
-      temperature: 0.7,
-      max_tokens: 4096
-    })
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+    body: JSON.stringify({ model, messages, stream: true, temperature: 0.7, max_tokens: 4096 })
   });
-
-  if (!res.ok){
-    let msg = 'API ' + res.status;
-    try {
-      const txt = await res.text();
-      try {
-        const j = JSON.parse(txt);
-        if (j && j.error && j.error.message) msg = j.error.message;
-        else msg = txt.slice(0, 200) || msg;
-      } catch(e){ msg = txt.slice(0, 200) || msg; }
-    } catch(e){}
-    throw new Error(msg);
-  }
-
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let full = '';
-  let buf = '';
-
-  while (true){
-    const { done, value } = await reader.read();
-    if (done) break;
-    buf += decoder.decode(value, { stream: true });
-    const lines = buf.split('\n');
-    buf = lines.pop();
-    for (const line of lines){
-      const t = line.trim();
-      if (!t.startsWith('data:')) continue;
-      const payload = t.slice(5).trim();
-      if (!payload || payload === '[DONE]') continue;
-      try {
-        const json = JSON.parse(payload);
-        const delta = json.choices && json.choices[0] && json.choices[0].delta;
-        if (delta && delta.content){
-          full += delta.content;
-          onChunk(delta.content);
-        }
-      } catch(e){}
+  if (!res.ok) { const txt = await res.text(); throw new Error(txt.slice(0, 200)); }
+  const reader = res.body.getReader(); const dec = new TextDecoder(); let full = ''; let buf = '';
+  while (true) {
+    const { done, value } = await reader.read(); if (done) break;
+    buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop();
+    for (const line of lines) {
+      const t = line.trim(); if (!t.startsWith('data:')) continue;
+      const payload = t.slice(5).trim(); if (!payload || payload === '[DONE]') continue;
+      try { const j = JSON.parse(payload); const d = j.choices?.[0]?.delta; if (d?.content) { full += d.content; onChunk(d.content); } } catch(e) {}
     }
   }
   return full;
 }
 
-async function groqOnce(messages, model, maxTokens){
+async function groqOnce(messages, model, maxTokens) {
   const res = await fetch(GROQ_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + GROQ_KEY
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature: 0.4,
-      max_tokens: maxTokens || 900
-    })
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+    body: JSON.stringify({ model, messages, temperature: 0.4, max_tokens: maxTokens || 900 })
   });
-  if (!res.ok){
-    let msg = 'API ' + res.status;
-    try {
-      const j = await res.json();
-      if (j && j.error && j.error.message) msg = j.error.message;
-    } catch(e){}
-    throw new Error(msg);
+  if (!res.ok) throw new Error('API ' + res.status);
+  const j = await res.json(); return j.choices[0].message.content;
+}
+
+function renderMD(text) {
+  if (!text) return '';
+  let html = ''; const parts = String(text).split(/```/);
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 1) {
+      let code = parts[i]; let lang = ''; const nl = code.indexOf('\n');
+      if (nl > -1) { const first = code.slice(0, nl).trim(); if (/^[\w+#.-]{0,20}$/.test(first)) { lang = first; code = code.slice(nl + 1); } }
+      html += '<pre><code>' + escapeHtml(code.replace(/\n$/, '')) + '</code></pre>';
+    } else {
+      let t = escapeHtml(parts[i]);
+      t = t.replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      t = t.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      t = t.split(/\n{2,}/).map(p => p.trim() ? '<p>' + p.replace(/\n/g, '<br>') + '</p>' : '').join('');
+      html += t;
+    }
   }
-  const json = await res.json();
-  return json.choices[0].message.content;
+  return html;
 }
 
 /* =========================================================
-   ENVIO DE MENSAGEM
+   FUNÇÕES DE FERRAMENTA
    ========================================================= */
-async function sendMessage(){
-  const chat = activeChat();
-  if (!chat || busy) return;
 
-  const ta = $('input');
-  const text = ta.value.trim();
-  if (!text) return;
+// 1. IMAGEM (Pollinations - ilimitado com rate limit)
+async function toolImage(prompt) {
+  const seed = Math.floor(Math.random() * 1e6);
+  const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&nologo=true&model=flux&seed=${seed}`;
+  return { type: 'image', url, prompt };
+}
 
-  ta.value = '';
-  autoGrow(ta);
-  updateSendBtn();
+// 1b. IMAGEM (Veida - quase ilimitado, 7/dia por IP)
+async function toolImageVeida(prompt) {
+  if (!canUse('veida')) throw new Error('Limite diário de imagens Veida atingido (7/dia).');
+  const res = await fetch('https://api.veida.ai/v1/generate', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt, aspectRatio: '1:1' })
+  });
+  if (!res.ok) throw new Error('Veida API ' + res.status);
+  const j = await res.json();
+  recordUsage('veida');
+  return { type: 'image', url: j.url, prompt, source: 'Veida' };
+}
 
-  if (imageMode){
-    await generateImage(text);
+// 2. TTS (Edge TTS - ilimitado, requer browser/WebSocket)
+// Nota: Em produção, use o pacote @edge-tts/universal no frontend.
+// Aqui usamos uma chamada simplificada via SpeechSynthesis nativa como fallback,
+// que é ilimitada e não requer chave.
+function toolTTS(text) {
+  return new Promise((resolve) => {
+    if (!window.speechSynthesis) throw new Error('SpeechSynthesis não suportado neste navegador.');
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'pt-BR';
+    utter.rate = 1;
+    window.speechSynthesis.speak(utter);
+    utter.onend = () => resolve({ type: 'audio', text, info: 'Reproduzido via SpeechSynthesis nativa (ilimitado).' });
+    utter.onerror = (e) => { throw new Error('Erro na síntese: ' + e.error); };
+    // Resolve imediatamente para não bloquear a UI
+    setTimeout(() => resolve({ type: 'audio', text, info: 'Áudio sendo reproduzido...' }), 500);
+  });
+}
+
+// 3. STT (Puter.js - ilimitado via user-pays, requer script)
+async function toolSTT(file) {
+  if (!window.puter) throw new Error('Puter.js não carregado. Adicione <script src="https://js.puter.com/v2/"></script> ao HTML.');
+  if (!canUse('puter_stt')) throw new Error('Limite de transcrições Puter atingido nesta sessão (10).');
+  const text = await puter.ai.speech2txt(file);
+  recordUsage('puter_stt');
+  return { type: 'text', content: '**Transcrição:**\n\n' + text };
+}
+
+// 4. BUSCA (Tavily - keyless, ilimitado com rate limit)
+async function toolSearch(query) {
+  const res = await fetch('https://api.tavily.com/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Tavily-Access-Mode': 'keyless' },
+    body: JSON.stringify({ query, max_results: 5 })
+  });
+  if (!res.ok) throw new Error('Tavily API ' + res.status);
+  const j = await res.json();
+  const results = j.results.map(r => `- [${r.title}](${r.url}): ${r.content?.slice(0, 200)}...`).join('\n');
+  return { type: 'text', content: `**Resultados da busca por "${query}":**\n\n${results}` };
+}
+
+// 5. MÚSICA (ACE Music - gratuito com chave)
+async function toolMusic(prompt, apiKey) {
+  if (!apiKey) throw new Error('Chave da ACE Music não configurada. Cole sua chave no campo abaixo.');
+  if (!canUse('ace')) throw new Error('Limite de músicas ACE atingido nesta sessão (5).');
+  const res = await fetch('https://api.acemusic.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+    body: JSON.stringify({ model: 'ace-step-1.5', messages: [{ role: 'user', content: prompt }] })
+  });
+  if (!res.ok) throw new Error('ACE Music API ' + res.status);
+  const j = await res.json();
+  recordUsage('ace');
+  // A resposta pode conter um link de áudio ou letra; extrai a URL se houver
+  const content = j.choices?.[0]?.message?.content || JSON.stringify(j);
+  return { type: 'text', content: '**Música gerada (ACE Music):**\n\n' + content };
+}
+
+// 6. VÍDEO (Agnes Video - gratuito ilimitado com chave)
+async function toolVideo(prompt, apiKey) {
+  if (!apiKey) throw new Error('Chave da Agnes AI não configurada. Cole sua chave no campo abaixo.');
+  if (!canUse('agnes')) throw new Error('Limite de vídeos Agnes atingido nesta sessão (3).');
+  // Cria tarefa
+  const createRes = await fetch('https://apihub.agnes-ai.com/v1/videos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+    body: JSON.stringify({ model: 'agnes-video-v2.0', prompt, duration: 5 })
+  });
+  if (!createRes.ok) throw new Error('Agnes API ' + createRes.status);
+  const { task_id } = await createRes.json();
+  // Polling
+  let videoUrl = null;
+  for (let i = 0; i < 30; i++) {
+    await new Promise(r => setTimeout(r, 4000));
+    const pollRes = await fetch(`https://apihub.agnes-ai.com/v1/videos/${task_id}`, {
+      headers: { 'Authorization': 'Bearer ' + apiKey }
+    });
+    const pollJ = await pollRes.json();
+    if (pollJ.status === 'completed' && pollJ.video_url) { videoUrl = pollJ.video_url; break; }
+    if (pollJ.status === 'failed') throw new Error('Geração de vídeo falhou.');
+  }
+  if (!videoUrl) throw new Error('Tempo esgotado para gerar o vídeo.');
+  recordUsage('agnes');
+  return { type: 'video', url: videoUrl, prompt };
+}
+
+/* =========================================================
+   UI DO CHAT
+   ========================================================= */
+function activeChat() { return state.chats.find(c => c.id === state.activeId) || null; }
+function createChat(silent) {
+  const c = { id: uid(), title: 'Novo chat', mode: state.mode || 'fast', messages: [], createdAt: Date.now() };
+  state.chats.unshift(c); state.activeId = c.id; if (!silent) renderAll(); return c;
+}
+
+function renderAll() { renderMessages(); renderTopTitle(); }
+
+function renderTopTitle() {
+  const names = { chat:'Chat', image:'Imagem', tts:'Texto para Fala', stt:'Transcrever Áudio', search:'Buscar na Web', music:'Gerar Música', video:'Gerar Vídeo', code:'Code' };
+  $('topTitle').textContent = 'TRUX AI · ' + (names[currentTool] || 'Chat');
+}
+
+function renderMessages() {
+  const el = $('messages'); const chat = activeChat(); el.innerHTML = '';
+  if (!chat || !chat.messages.length) {
+    el.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#666">
+      <div style="font-size:40px;margin-bottom:16px;opacity:.5">✦</div>
+      <h2 style="font-size:18px;color:#888;margin-bottom:8px">TRUX AI</h2>
+      <p style="font-size:13px;max-width:400px;margin:0 auto;line-height:1.6">Use a barra lateral para escolher uma ferramenta. Todas as funções são gratuitas ou quase ilimitadas, com limites por sessão para evitar abusos.</p>
+    </div>`;
     return;
   }
+  const wrap = document.createElement('div'); wrap.className = 'msg-wrap';
+  chat.messages.forEach(m => {
+    const d = document.createElement('div'); d.className = 'msg ' + (m.role === 'user' ? 'user' : 'ai');
+    d.innerHTML = `<div class="avatar">${m.role === 'user' ? 'EU' : 'TRUX'}</div>`;
+    const bubble = document.createElement('div'); bubble.className = 'bubble';
+    if (m.type === 'image') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:11px;color:#888;margin-bottom:8px">${escapeHtml(m.prompt)}</p><img src="${m.url}" alt="${escapeHtml(m.prompt)}" style="width:100%;border-radius:10px" loading="lazy"></div>`;
+    else if (m.type === 'video') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:11px;color:#888;margin-bottom:8px">${escapeHtml(m.prompt)}</p><video src="${m.url}" controls style="width:100%;border-radius:10px"></video></div>`;
+    else if (m.type === 'audio') bubble.innerHTML = `<div class="tool-panel"><p style="font-size:12px;color:#8a8a8a">${escapeHtml(m.info || 'Áudio gerado.')}</p></div>`;
+    else bubble.innerHTML = renderMD(m.content || '');
+    d.appendChild(bubble); wrap.appendChild(d);
+  });
+  el.appendChild(wrap); el.scrollTop = el.scrollHeight;
+}
 
+/* =========================================================
+   ENVIO PRINCIPAL
+   ========================================================= */
+async function sendMessage() {
+  const chat = activeChat(); if (!chat || busy) return;
+  const ta = $('input'); const text = ta.value.trim(); if (!text) return;
+  ta.value = ''; ta.style.height = 'auto'; updateSendBtn();
+
+  // Adiciona mensagem do usuário
   chat.messages.push({ role: 'user', content: text });
-  if (!chat.title || chat.title === 'Novo chat'){
-    chat.title = text.slice(0, 46);
-  }
+  if (!chat.title || chat.title === 'Novo chat') chat.title = text.slice(0, 46);
   renderAll();
 
-  const apiMessages = [{ role: 'system', content: SYSTEM[chat.mode] || SYSTEM.fast }];
-  chat.messages.forEach(m => {
-    if (m.type === 'image') return;
-    if (!m.content) return;
-    apiMessages.push({ role: m.role, content: m.content });
-  });
-
-  chat.messages.push({ role: 'assistant', content: '' });
-  renderAll();
-
-  const bubbles = document.querySelectorAll('.msg.ai .bubble');
-  const target = bubbles[bubbles.length - 1];
-  if (!target) return;
-
-  busy = true;
-  updateSendBtn();
-  target.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
-
-  let acc = '';
-  let lastPaint = 0;
-  let firstChunk = true;
+  busy = true; updateSendBtn();
 
   try {
-    await groqStream(apiMessages, MODELS[chat.mode] || MODELS.fast, (chunk) => {
-      acc += chunk;
-      const now = performance.now();
-      if (firstChunk){
-        firstChunk = false;
-        target.innerHTML = renderMD(acc) + '<span class="caret"></span>';
-        scrollBottom();
-        return;
-      }
-      if (now - lastPaint > 55){
-        lastPaint = now;
-        target.innerHTML = renderMD(acc) + '<span class="caret"></span>';
-        scrollBottom();
-      }
-    });
-    target.innerHTML = renderMD(acc);
-    attachCodeCopy(target);
-    chat.messages[chat.messages.length - 1].content = acc;
-    scrollBottom();
-  } catch (err){
-    target.innerHTML = '<span class="err">Erro: ' + escapeHtml(err.message) + '</span>';
-    chat.messages[chat.messages.length - 1].content = 'Erro: ' + err.message;
-  } finally {
-    busy = false;
-    updateSendBtn();
-  }
-}
-
-/* =========================================================
-   BRANCH A PARTIR DE RESUMO
-   ========================================================= */
-async function branchChat(id){
-  const chat = state.chats.find(c => c.id === id);
-  if (!chat) return;
-  if (busy){ toast('Aguarde a resposta atual terminar'); return; }
-  if (!chat.messages.filter(m => m.content).length){
-    toast('Este chat está vazio');
-    return;
-  }
-
-  busy = true;
-  updateSendBtn();
-  toast('Resumindo o chat para criar o branch...');
-
-  const transcript = chat.messages
-    .filter(m => m.type !== 'image' && m.content)
-    .map(m => (m.role === 'user' ? 'USUÁRIO: ' : 'TRUX AI: ') + m.content)
-    .join('\n\n')
-    .slice(0, 9000);
-
-  let summary = '';
-  try {
-    summary = await groqOnce([
-      { role: 'system', content: 'Você é um assistente que resume conversas com precisão. Seja objetivo e preserve todo o contexto útil.' },
-      { role: 'user', content:
-        'Resuma a conversa abaixo em português do Brasil. Preserve: o tema central, decisões tomadas, fatos e dados citados, preferências do usuário e pendências. ' +
-        'Use no máximo 350 palavras, em tópicos markdown.\n\n---\n' + transcript }
-    ], MODELS.fast, 900);
-  } catch (err){
-    toast('Falha ao resumir: ' + err.message);
-    busy = false;
-    updateSendBtn();
-    return;
-  }
-
-  const newChat = {
-    id: uid(),
-    title: (chat.title || 'Chat').slice(0, 34) + ' · branch',
-    mode: chat.mode,
-    branchOf: chat.id,
-    createdAt: Date.now(),
-    messages: [
-      {
-        role: 'assistant',
-        type: 'summary',
-        content: '**Resumo do chat anterior**\n\n' + summary + '\n\n*Este branch continua a partir do resumo acima.*'
-      }
-    ]
-  };
-
-  state.chats.unshift(newChat);
-  state.activeId = newChat.id;
-  _lastRendered = { chatId: null, count: 0 };
-  renderAll();
-  busy = false;
-  updateSendBtn();
-  toast('Branch criado a partir do resumo');
-}
-
-/* =========================================================
-   GERAÇÃO DE IMAGEM
-   ========================================================= */
-async function generateImage(prompt, isRegen){
-  const chat = activeChat();
-  if (!chat) return;
-
-  const clean = prompt.trim();
-  if (!clean) return;
-
-  if (!isRegen){
-    chat.messages.push({ role: 'user', content: 'Gerar imagem: ' + clean });
-    if (!chat.title || chat.title === 'Novo chat'){
-      chat.title = 'Imagem: ' + clean.slice(0, 32);
+    let result;
+    // Roteamento por ferramenta ativa
+    switch (currentTool) {
+      case 'image':
+        result = await toolImage(text);
+        break;
+      case 'tts':
+        result = await toolTTS(text);
+        break;
+      case 'search':
+        result = await toolSearch(text);
+        break;
+      case 'music':
+        // Solicita chave ACE ao usuário (simplificado: usa campo global)
+        const aceKey = prompt('Cole sua chave da ACE Music (gratuita em acemusic.ai/playground/api-key):');
+        result = await toolMusic(text, aceKey);
+        break;
+      case 'video':
+        const agnesKey = prompt('Cole sua chave da Agnes AI (gratuita em platform.agnes-ai.com):');
+        result = await toolVideo(text, agnesKey);
+        break;
+      case 'stt':
+        // STT requer upload de arquivo; orienta o usuário
+        result = { type: 'text', content: 'Para transcrever áudio, use o botão de upload na barra de ferramentas (em breve). Enquanto isso, você pode usar a função Puter.js diretamente no console.' };
+        break;
+      case 'code':
+        // Usa GROQ no modo code
+        const codeChat = [{ role: 'system', content: SYSTEM.code }, { role: 'user', content: text }];
+        let acc = '';
+        await groqStream(codeChat, MODELS.code, chunk => { acc += chunk; });
+        result = { role: 'assistant', content: acc };
+        break;
+      default: // chat normal
+        const apiMsgs = [{ role: 'system', content: SYSTEM[chat.mode] || SYSTEM.fast }];
+        chat.messages.forEach(m => { if (m.type === 'image' || m.type === 'video') return; if (m.content) apiMsgs.push({ role: m.role, content: m.content }); });
+        let response = '';
+        await groqStream(apiMsgs, MODELS[chat.mode] || MODELS.fast, chunk => { response += chunk; });
+        result = { role: 'assistant', content: response };
     }
-  }
 
-  const seed = Math.floor(Math.random() * 1000000);
-  const url = 'https://image.pollinations.ai/prompt/' +
-    encodeURIComponent(clean) +
-    '?width=1024&height=1024&nologo=true&model=flux&seed=' + seed;
-
-  chat.messages.push({ role: 'assistant', type: 'image', prompt: clean, url });
-  renderAll();
-  toast('Gerando imagem...');
-}
-
-async function downloadImage(url, prompt){
-  const safe = (prompt || 'trux-imagem').replace(/[^\w\s-]/g, '').trim().slice(0, 48).replace(/\s+/g, '-') || 'trux-imagem';
-  try {
-    const res = await fetch(url, { mode: 'cors' });
-    if (!res.ok) throw new Error('fetch fail');
-    const blob = await res.blob();
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = safe + '.png';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    toast('Imagem baixada');
-  } catch (e){
-    window.open(url, '_blank', 'noopener');
-    toast('Abrindo imagem em nova aba');
-  }
-}
-
-/* =========================================================
-   EXPORTAÇÃO
-   ========================================================= */
-function chatToText(chat, index){
-  let t = '';
-  t += '============================================================\n';
-  t += 'CHAT ' + (index != null ? '#' + (index + 1) + ' — ' : '') + (chat.title || 'Sem título') + '\n';
-  t += 'Modo: ' + (MODE_LABEL[chat.mode] || 'RÁPIDA') + '\n';
-  t += 'Criado em: ' + new Date(chat.createdAt || Date.now()).toLocaleString('pt-BR') + '\n';
-  if (chat.branchOf) t += 'Branch do chat: ' + chat.branchOf + '\n';
-  t += '============================================================\n\n';
-
-  chat.messages.forEach(m => {
-    if (m.type === 'image'){
-      t += '[IMAGEM GERADA]\nPrompt: ' + m.prompt + '\nURL: ' + m.url + '\n\n';
-      return;
+    // Adiciona resultado ao chat
+    if (result.type === 'image' || result.type === 'video' || result.type === 'audio') {
+      chat.messages.push({ role: 'assistant', ...result });
+    } else {
+      chat.messages.push({ role: 'assistant', content: result.content || result });
     }
-    t += (m.role === 'user' ? 'USUÁRIO:' : 'TRUX AI:') + '\n' + (m.content || '') + '\n\n';
-  });
-  t += '\n';
-  return t;
-}
-
-function downloadCurrentChat(){
-  const chat = activeChat();
-  if (!chat || !chat.messages.length){ toast('Nada para baixar neste chat'); return; }
-  downloadTxt('trux-ai-' + (chat.title || 'chat').replace(/[^\w\s-]/g, '').trim().slice(0, 40).replace(/\s+/g, '-').toLowerCase(),
-    chatToText(chat));
-  toast('Chat baixado em .TXT');
-}
-
-function downloadAllChats(){
-  if (!state.chats.length){ toast('Nenhuma conversa para exportar'); return; }
-  let txt = 'TRUX AI — EXPORTAÇÃO DE CONVERSAS\n';
-  txt += 'Gerado em: ' + new Date().toLocaleString('pt-BR') + '\n';
-  txt += 'Total de conversas: ' + state.chats.length + '\n';
-  txt += 'Este arquivo foi gerado localmente no seu navegador.\n\n\n';
-
-  state.chats.slice().reverse().forEach((c, i) => {
-    txt += chatToText(c, i);
-  });
-
-  txt += '— FIM DA EXPORTAÇÃO —\n';
-  downloadTxt('trux-ai-conversas', txt);
-  toast('Todas as conversas baixadas');
-}
-
-/* =========================================================
-   APAGAR DADOS
-   ========================================================= */
-function wipeAllData(){
-  if (!confirm('Apagar TODOS os dados locais?\n\nIsso remove permanentemente todos os chats, imagens e configurações deste navegador. Não pode ser desfeito.')) return;
-
-  try { sessionStorage.clear(); } catch(e){}
-  try { localStorage.clear(); } catch(e){}
-
-  state = { chats: [], activeId: null, mode: 'fast' };
-  imageMode = false;
-  setImageMode(false);
-  _lastRendered = { chatId: null, count: 0 };
-  createChat(true);
-  renderAll();
-  toast('Todos os dados locais foram apagados');
-}
-
-/* =========================================================
-   CODE MODAL
-   ========================================================= */
-function openCodeModal(){
-  $('codeOverlay').classList.add('open');
-  setTimeout(() => $('codeInput').focus(), 80);
-}
-function closeCodeModal(){
-  $('codeOverlay').classList.remove('open');
-}
-
-async function runCode(){
-  const input = $('codeInput');
-  const out = $('codeOut');
-  const req = input.value.trim();
-  if (!req) return;
-  if (out.dataset.running === '1') return;
-
-  out.dataset.running = '1';
-  $('codeSend').disabled = true;
-  out.textContent = '';
-  out.classList.add('streaming');
-  lastCodeOutput = '';
-
-  let acc = '';
-  try {
-    await groqStream([
-      { role: 'system', content: SYSTEM.code },
-      { role: 'user', content: req }
-    ], MODELS.code, (chunk) => {
-      acc += chunk;
-      out.textContent = acc;
-      out.scrollTop = out.scrollHeight;
-    });
-    lastCodeOutput = acc;
-    toast('Código gerado');
-  } catch (err){
-    out.textContent = 'Erro: ' + err.message;
-    lastCodeOutput = out.textContent;
+    renderAll();
+  } catch (err) {
+    chat.messages.push({ role: 'assistant', type: 'error', content: 'Erro: ' + err.message });
+    renderAll();
+    toast('Erro: ' + err.message);
   } finally {
-    out.classList.remove('streaming');
-    out.dataset.running = '0';
-    $('codeSend').disabled = false;
+    busy = false; updateSendBtn();
   }
 }
 
 /* =========================================================
    COMPOSER
    ========================================================= */
-function autoGrow(ta){
-  ta.style.height = 'auto';
-  ta.style.height = Math.min(ta.scrollHeight, 180) + 'px';
-}
-
-function updateSendBtn(){
+function updateSendBtn() {
   const has = $('input').value.trim().length > 0;
-  const btn = $('btnSend');
-  btn.disabled = !has || busy;
-  btn.innerHTML = busy ? ICON.spinner : ICON.send;
+  $('btnSend').disabled = !has || busy;
+  $('btnSend').innerHTML = busy ? '<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
 }
-
-const PLACEHOLDER = {
-  fast: 'Pergunte alguma coisa para a TRUX AI...',
-  think: 'O que você quer pensar a fundo?',
-  code: 'Descreva o que você quer codar...'
-};
-
-function setImageMode(on){
-  imageMode = on;
-  $('btnImg').classList.toggle('on', on);
-  $('composer').classList.toggle('img-mode', on);
-  const chat = activeChat();
-  const mode = chat ? chat.mode : state.mode;
-  $('input').placeholder = on
-    ? 'Descreva a imagem que você quer gerar...'
-    : (PLACEHOLDER[mode] || PLACEHOLDER.fast);
-}
-
-/* =========================================================
-   SIDEBAR MOBILE
-   ========================================================= */
-function openSidebar(){
-  $('sidebar').classList.add('open');
-  $('scrim').classList.add('open');
-}
-function closeSidebar(){
-  $('sidebar').classList.remove('open');
-  $('scrim').classList.remove('open');
-}
+const style = document.createElement('style');
+style.textContent = '.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
 
 /* =========================================================
    EVENTOS
    ========================================================= */
-function bindEvents(){
+function bindEvents() {
+  // Menu mobile
+  $('btnMenu').addEventListener('click', () => { $('sidebar').classList.add('open'); $('scrim').classList.add('open'); });
+  $('scrim').addEventListener('click', () => { $('sidebar').classList.remove('open'); $('scrim').classList.remove('open'); });
 
-  $('btnNew').addEventListener('click', () => {
-    createChat();
-    closeSidebar();
-    $('input').focus();
-  });
-
-  $('btnMenu').addEventListener('click', openSidebar);
-  $('scrim').addEventListener('click', closeSidebar);
-
-  document.querySelectorAll('.mode').forEach(btn => {
+  // Ferramentas
+  document.querySelectorAll('.tool-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const mode = btn.dataset.mode;
-      state.mode = mode;
-      const chat = activeChat();
-      if (chat) chat.mode = mode;
-      renderModes();
-      renderTopbar();
-      setImageMode(false);
-      if (mode === 'code') openCodeModal();
-      closeSidebar();
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTool = btn.dataset.tool;
+      renderTopTitle();
+      $('sidebar').classList.remove('open'); $('scrim').classList.remove('open');
+      $('input').focus();
     });
   });
 
-  $('btnBranch').addEventListener('click', () => {
-    const chat = activeChat();
-    if (chat) branchChat(chat.id);
-  });
-  $('btnDownloadChat').addEventListener('click', downloadCurrentChat);
-  $('btnDeleteChat').addEventListener('click', () => {
-    const chat = activeChat();
-    if (chat) deleteChat(chat.id);
-  });
-
-  $('btnExportAll').addEventListener('click', downloadAllChats);
-  $('btnWipe').addEventListener('click', wipeAllData);
-
+  // Input
   const input = $('input');
-  input.addEventListener('input', () => { autoGrow(input); updateSendBtn(); });
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey){
-      e.preventDefault();
-      if (!busy && input.value.trim()) sendMessage();
-    }
-  });
+  input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 180) + 'px'; updateSendBtn(); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!busy && input.value.trim()) sendMessage(); } });
   $('btnSend').addEventListener('click', sendMessage);
-  $('btnImg').addEventListener('click', () => {
-    setImageMode(!imageMode);
-    $('input').focus();
+
+  // Botões do topo
+  $('btnDeleteChat').addEventListener('click', () => {
+    const chat = activeChat(); if (!chat) return;
+    if (!confirm('Apagar este chat?')) return;
+    state.chats = state.chats.filter(c => c.id !== chat.id);
+    if (!state.chats.length) createChat(true); else state.activeId = state.chats[0].id;
+    renderAll(); toast('Chat apagado');
+  });
+  $('btnDownloadChat').addEventListener('click', () => {
+    const chat = activeChat(); if (!chat || !chat.messages.length) { toast('Chat vazio.'); return; }
+    let txt = `=== ${chat.title} ===\n\n`;
+    chat.messages.forEach(m => { txt += (m.role === 'user' ? 'EU: ' : 'TRUX: ') + (m.content || JSON.stringify(m)) + '\n\n'; });
+    downloadTxt('trux-chat.txt', txt);
+  });
+  $('btnExportAll').addEventListener('click', () => {
+    if (!state.chats.length) { toast('Nenhuma conversa.'); return; }
+    let txt = '=== TRUX AI — TODAS AS CONVERSAS ===\n\n';
+    state.chats.slice().reverse().forEach((c, i) => {
+      txt += `--- Chat ${i+1}: ${c.title} ---\n`;
+      c.messages.forEach(m => { txt += (m.role === 'user' ? 'EU: ' : 'TRUX: ') + (m.content || JSON.stringify(m)) + '\n'; });
+      txt += '\n';
+    });
+    downloadTxt('trux-todas-conversas.txt', txt);
+  });
+  $('btnWipe').addEventListener('click', () => {
+    if (!confirm('Apagar todos os dados locais?')) return;
+    sessionStorage.clear(); localStorage.clear();
+    state = { chats: [], activeId: null, mode: 'fast' };
+    createChat(true); renderAll(); toast('Dados apagados.');
   });
 
-  $('codeClose').addEventListener('click', closeCodeModal);
-  $('codeOverlay').addEventListener('click', (e) => {
-    if (e.target === $('codeOverlay')) closeCodeModal();
-  });
-  $('codeSend').addEventListener('click', runCode);
-  $('codeInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey){
-      e.preventDefault();
-      runCode();
-    }
-  });
-  $('codeInput').addEventListener('input', () => {
-    const ta = $('codeInput');
-    ta.style.height = 'auto';
-    ta.style.height = Math.min(ta.scrollHeight, 140) + 'px';
-  });
-  $('codeCopy').addEventListener('click', () => copyText(lastCodeOutput || $('codeOut').textContent));
-  $('codeDownload').addEventListener('click', () => {
-    const content = lastCodeOutput || $('codeOut').textContent;
-    if (!content.trim()){ toast('Nada para baixar'); return; }
-    downloadTxt('trux-ai-codigo', content);
-    toast('Código baixado em .TXT');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeCodeModal();
-  });
-
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 880) closeSidebar();
+  // Modo imagem no composer
+  $('btnImgMode').addEventListener('click', () => {
+    imageMode = !imageMode;
+    $('btnImgMode').style.background = imageMode ? 'rgba(255,107,0,.2)' : '';
+    $('input').placeholder = imageMode ? 'Descreva a imagem...' : 'Pergunte alguma coisa...';
   });
 }
 
+function downloadTxt(name, content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+
+// Ripple effect
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const r = document.createElement('span'); r.className = 'ripple';
+  const rect = b.getBoundingClientRect(); const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size/2) + 'px'; r.style.top = (e.clientY - rect.top - size/2) + 'px';
+  b.appendChild(r); setTimeout(() => r.remove(), 700);
+});
+
 /* =========================================================
-   INICIALIZAÇÃO — apaga tudo em cada visita
+   INICIALIZAÇÃO
    ========================================================= */
-function init(){
-  try { localStorage.clear(); } catch(e){}
-  try { sessionStorage.clear(); } catch(e){}
+function init() {
+  // Limpa dados de sessões anteriores
+  try { localStorage.clear(); } catch(e) {}
+  try { sessionStorage.clear(); } catch(e) {}
 
   state = { chats: [], activeId: null, mode: 'fast' };
   createChat(true);
-
   bindEvents();
   renderAll();
   updateSendBtn();
-  setImageMode(false);
+
+  // Carrega Puter.js dinamicamente para STT
+  const puterScript = document.createElement('script');
+  puterScript.src = 'https://js.puter.com/v2/';
+  document.head.appendChild(puterScript);
 }
 
 init();
